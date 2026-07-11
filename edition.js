@@ -52,12 +52,16 @@ async function enregistrerEdition(){
   r.modifie=true;
 
   // écriture directe dans Supabase — visible par tous les visiteurs
-  const { error } = await supabaseClient.from('refuges').update({
+  const { data: lignesMaj, error } = await supabaseClient.from('refuges').update({
     nom:r.nom, altitude:r.alt, places:r.places, categorie:r.cat, eau:r.eau,
     bois:r.bois, eau_mois:r.eauMois, lat:r.lat, lon:r.lon, description:r.desc,
     modifie:true, maj_le:new Date().toISOString()
-  }).eq('id', r.id);
+  }).eq('id', r.id).select();
   if(error){ alert("Impossible de sauvegarder sur le serveur : "+error.message); return; }
+  if(!lignesMaj || lignesMaj.length===0){
+    alert("La sauvegarde n'a touché aucune ligne côté serveur (id recherché : \""+r.id+"\"). Soit ce lieu n'existe pas dans la table Supabase avec cet identifiant, soit les règles de sécurité (RLS) bloquent la modification. Vérifie dans Supabase → Table Editor → refuges qu'une ligne a bien cet id.");
+    return;
+  }
 
   // mise à jour du marqueur
   const idx=lieuEnEdition;
