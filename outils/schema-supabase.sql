@@ -1,0 +1,38 @@
+-- =============================================================================
+-- schema-supabase.sql — À exécuter une fois dans le SQL Editor de Supabase
+-- =============================================================================
+
+create table refuges (
+  id text primary key,
+  nom text not null,
+  lat double precision not null,
+  lon double precision not null,
+  altitude integer,
+  region text,
+  departement text,
+  places text,
+  eau text,
+  bois text,
+  eau_mois integer[],
+  type_num integer,
+  categorie text,
+  description text,
+  lien text,
+  modifie boolean not null default false,
+  origine jsonb,              -- copie des valeurs d'origine, pour permettre un "réinitialiser"
+  maj_le timestamptz not null default now()
+);
+
+-- Active la sécurité au niveau des lignes (obligatoire pour exposer la table via l'API publique)
+alter table refuges enable row level security;
+
+-- Tout le monde peut lire
+create policy "lecture publique" on refuges
+  for select using (true);
+
+-- Tout le monde peut modifier un lieu existant (pas de compte requis)
+create policy "edition publique" on refuges
+  for update using (true) with check (true);
+
+-- Pas de policy insert/delete → seul le script d'import (avec la clé service_role,
+-- qui contourne RLS) peut créer ou supprimer des lignes. Le public ne peut qu'éditer.

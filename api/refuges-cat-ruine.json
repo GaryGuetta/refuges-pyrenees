@@ -1,0 +1,20 @@
+{
+ "meta": {
+  "source": "pyrenees-refuges.com",
+  "licence": "Données © pyrenees-refuges.com — merci de conserver l’attribution",
+  "genere_le": "2026-07-11T00:35:49.771Z",
+  "nombre": 0,
+  "regions": [
+   "Andorre",
+   "Occitanie",
+   "Nouvelle-Aquitaine"
+  ],
+  "categories": {
+   "refuge": "Refuge gardé",
+   "libre": "Cabane ouverte",
+   "cabane": "Cabane / abri",
+   "ruine": "Ruine"
+  }
+ },
+ "refuges": []
+}
