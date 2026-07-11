@@ -99,8 +99,17 @@ async function charger(){
   try{
     // Table Supabase `refuges` — voir outils/schema-supabase.sql et
     // outils/importer-supabase.mjs pour la mise en place / le remplissage.
-    const { data, error } = await supabaseClient.from('refuges').select('*');
-    if(error) throw error;
+    // Supabase limite chaque requête à 1000 lignes par défaut : on pagine
+    // pour être sûr de récupérer TOUS les lieux, même au-delà de 1000.
+    const TAILLE_PAGE=1000;
+    let debut=0, data=[];
+    while(true){
+      const { data:page, error } = await supabaseClient.from('refuges').select('*').range(debut,debut+TAILLE_PAGE-1);
+      if(error) throw error;
+      data=data.concat(page);
+      if(page.length<TAILLE_PAGE) break;
+      debut+=TAILLE_PAGE;
+    }
     progres.textContent=`${data.length} lieux`;
     refugesData=(data||[]).map(r=>({
       id:r.id,

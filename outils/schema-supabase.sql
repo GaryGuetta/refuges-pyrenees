@@ -64,6 +64,7 @@ create policy "lecture publique passages" on passages
 create policy "ajout par compte connecte" on passages
   for insert with check (auth.uid() = user_id);
 
--- Pas de policy delete : les passages sont permanents, personne ne peut en
--- supprimer (ni les visiteurs, ni via l'interface du site).
+-- Chacun peut supprimer SES PROPRES passages, jamais ceux des autres
+create policy "suppression par l'auteur" on passages
+  for delete using (auth.uid() = user_id);
 

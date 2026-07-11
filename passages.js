@@ -9,8 +9,15 @@ let PASSAGES = {};
 
 async function chargerPassagesDepuisSupabase(){
   try{
-    const { data, error } = await supabaseClient.from('passages').select('*');
-    if(error) throw error;
+    const TAILLE_PAGE=1000;
+    let debut=0, data=[];
+    while(true){
+      const { data:page, error } = await supabaseClient.from('passages').select('*').range(debut,debut+TAILLE_PAGE-1);
+      if(error) throw error;
+      data=data.concat(page);
+      if(page.length<TAILLE_PAGE) break;
+      debut+=TAILLE_PAGE;
+    }
     PASSAGES = {};
     (data||[]).forEach(p=>{
       if(!PASSAGES[p.refuge_id]) PASSAGES[p.refuge_id]=[];
@@ -58,6 +65,17 @@ async function ajouterPassage(i){
   appliquer();
 }
 
+async function supprimerPassage(i,id){
+  if(!confirm("Supprimer ce passage ?")) return;
+  const r=REFUGES[i];
+  const { error } = await supabaseClient.from('passages').delete().eq('id', id);
+  if(error){ alert("Impossible de supprimer ce passage : "+error.message); return; }
+  if(PASSAGES[r.id]){ PASSAGES[r.id]=PASSAGES[r.id].filter(p=>p.id!==id); }
+  rendrePassages(i);
+  rafraichirMarqueur(i);
+  appliquer();
+}
+
 function rendrePassages(i){
   const r=REFUGES[i];
   const liste=document.getElementById('hist-liste');
@@ -84,8 +102,10 @@ function rendrePassages(i){
       const info=BALISE_INFO[id]; if(!info) return '';
       return `<span class="hist-balise${info.alerte?' alerte':''}">${info.txt}</span>`;
     }).join('');
+    const mien = estConnecte() && p.user_id===currentUser.id;
     return `
     <div class="hist-item">
+      ${mien ? `<button class="hist-suppr" onclick="supprimerPassage(${i},${p.id})" title="Supprimer">&times;</button>` : ''}
       <div class="hist-item-date">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
         ${fmtDate(p.date)}

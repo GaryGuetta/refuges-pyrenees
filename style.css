@@ -951,7 +951,12 @@ body.mode-topo .cluster{background:var(--accent)!important;color:var(--sur-accen
 
   /* "Autour de moi" et le zoom Leaflet remontent au-dessus du panneau du bas,
      au lieu de se superposer avec la liste */
-  .autour-moi{right:12px;bottom:calc(48vh + 20px)!important}
+  .autour-moi{
+    right:12px;bottom:calc(48vh + 20px)!important;
+    padding:0;width:34px;height:34px;border-radius:10px;
+    justify-content:center;gap:0;
+  }
+  .autour-moi span{display:none}
   .leaflet-top.leaflet-left{right:12px;bottom:calc(48vh + 20px)}
 
   /* Modal d'édition : marges réduites */
