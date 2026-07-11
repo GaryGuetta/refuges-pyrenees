@@ -93,6 +93,7 @@ function departementDe(lat, lon){
 async function charger(){
   const progres=document.getElementById('progres');
   progres.textContent='chargement…';
+  await initAuth();
 
   let refugesData=[];
   try{

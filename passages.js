@@ -14,7 +14,7 @@ async function chargerPassagesDepuisSupabase(){
     PASSAGES = {};
     (data||[]).forEach(p=>{
       if(!PASSAGES[p.refuge_id]) PASSAGES[p.refuge_id]=[];
-      PASSAGES[p.refuge_id].push({ id:p.id, date:p.date, com:p.commentaire||'', balises:p.balises||[] });
+      PASSAGES[p.refuge_id].push({ id:p.id, date:p.date, com:p.commentaire||'', balises:p.balises||[], user_id:p.user_id });
     });
   }catch(e){
     console.warn('Chargement des passages échoué:',e);
@@ -26,9 +26,16 @@ function passagesDe(refugeId){
   return (PASSAGES[refugeId]||[]).slice().sort((a,b)=>b.date.localeCompare(a.date));
 }
 
-function estVisite(r){ return passagesDe(r.id).length>0; }
+// "Visité" = visité par MOI (le compte connecté), pas par n'importe qui.
+function mesPassagesDe(refugeId){
+  if(!estConnecte()) return [];
+  return passagesDe(refugeId).filter(p=>p.user_id===currentUser.id);
+}
+
+function estVisite(r){ return mesPassagesDe(r.id).length>0; }
 
 async function ajouterPassage(i){
+  if(!estConnecte()){ alert("Connecte-toi d'abord pour ajouter un passage (bouton profil en haut à droite)."); return; }
   const r=REFUGES[i];
   const date=document.getElementById('hist-date').value;
   const com=document.getElementById('hist-com').value.trim();
@@ -37,12 +44,12 @@ async function ajouterPassage(i){
   if(!com && balises.length===0){ alert("Ajoute au moins une balise ou un commentaire."); return; }
 
   const { data, error } = await supabaseClient.from('passages')
-    .insert({ refuge_id:r.id, date, commentaire:com||null, balises:balises.length?balises:null })
+    .insert({ refuge_id:r.id, date, commentaire:com||null, balises:balises.length?balises:null, user_id:currentUser.id })
     .select().single();
   if(error){ alert("Impossible d'enregistrer ce passage sur le serveur : "+error.message); return; }
 
   if(!PASSAGES[r.id]) PASSAGES[r.id]=[];
-  PASSAGES[r.id].push({ id:data.id, date:data.date, com:data.commentaire||'', balises:data.balises||[] });
+  PASSAGES[r.id].push({ id:data.id, date:data.date, com:data.commentaire||'', balises:data.balises||[], user_id:data.user_id });
 
   document.getElementById('hist-com').value='';
   document.querySelectorAll('#hist-balises .balise-btn.actif').forEach(b=>b.classList.remove('actif'));

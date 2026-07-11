@@ -56,6 +56,9 @@ function rafraichirMarqueur(i){
   const r=REFUGES[i],m=marqueurs[i];
   if(m) m.setIcon(iconeRefuge(r));
 }
+function rafraichirTousLesMarqueurs(){
+  REFUGES.forEach((r,i)=>rafraichirMarqueur(i));
+}
 
 // Clic carte → eau la plus proche
 let marqueurClic=null;

@@ -22,16 +22,40 @@ function fermerProfil() {
 function rendreProfilComplet() {
   const box = document.getElementById('profil-panneau');
 
-  const clesVisitees = Object.keys(PASSAGES).filter(k => PASSAGES[k].length > 0);
+  if(!estConnecte()){
+    box.innerHTML = `
+    <div class="profil-entete">
+      <div class="profil-entete-titre">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="17" height="17"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>
+        <h2>Mon profil</h2>
+      </div>
+      <button class="profil-fermer" onclick="fermerProfil()" aria-label="Fermer">&times;</button>
+    </div>
+    <div class="profil-corps" id="profil-corps-auth">
+      <p style="color:var(--txt2);font-size:13px;line-height:1.6;margin-bottom:18px">
+        Connecte-toi pour suivre les refuges que t'as visités, avec tes stats personnelles.
+      </p>
+      <div class="champ"><label>Email</label><input type="email" id="auth-email" autocomplete="email"></div>
+      <div class="champ" style="margin-top:12px"><label>Mot de passe</label><input type="password" id="auth-password" autocomplete="current-password"></div>
+      <div id="auth-erreur" style="color:var(--corail);font-size:12px;margin-top:8px;display:none"></div>
+      <div style="display:flex;gap:10px;margin-top:16px">
+        <button class="btn btn-save" style="flex:1" onclick="handleConnexion()">Se connecter</button>
+        <button class="btn btn-annuler" style="flex:1" onclick="handleInscription()">Créer un compte</button>
+      </div>
+    </div>`;
+    return;
+  }
+
+  const clesVisitees = Object.keys(PASSAGES).filter(k => mesPassagesDe(k).length > 0);
 
   // Refuges visités (croisement avec REFUGES)
   const refugesVisites = REFUGES.filter(r => clesVisitees.includes(r.id));
   const nbVisites      = refugesVisites.length;
   const nbTotal        = REFUGES.length;
 
-  // Tous les passages à plat
+  // Tous MES passages à plat
   const tousLesPassages = clesVisitees.flatMap(k =>
-    PASSAGES[k].map(p => ({...p, refuge_id: k}))
+    mesPassagesDe(k).map(p => ({...p, refuge_id: k}))
   ).sort((a, b) => b.date.localeCompare(a.date));
 
   const nbPassages = tousLesPassages.length;
@@ -62,6 +86,10 @@ function rendreProfilComplet() {
     <button class="profil-fermer" onclick="fermerProfil()" aria-label="Fermer">&times;</button>
   </div>
   <div class="profil-corps">
+  <div class="profil-compte">
+    <span class="profil-compte-email">${currentUser.email}</span>
+    <button class="profil-compte-deco" onclick="handleDeconnexion()">Se déconnecter</button>
+  </div>
   <div class="profil-stats">
     <div class="profil-stat">
       <div class="profil-stat-num cyan">${nbVisites}</div>

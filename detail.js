@@ -86,12 +86,17 @@ function afficherDetail(r){
 
     <div class="d-section">
       <h3>Historique des passages</h3>
+      ${estConnecte() ? `
       <div class="hist-form">
         <input type="date" id="hist-date" value="${new Date().toISOString().slice(0,10)}">
         <div id="hist-balises">${balisesFormHTML()}</div>
         <textarea id="hist-com" placeholder="Commentaire libre (optionnel) : météo, détails, précisions…"></textarea>
         <button class="hist-ajouter" onclick="ajouterPassage(${r._i})">+ Ajouter ce passage</button>
-      </div>
+      </div>` : `
+      <div class="hist-connexion">
+        <p>Connecte-toi pour ajouter un passage et suivre les refuges que t'as visités.</p>
+        <button class="hist-ajouter" onclick="ouvrirProfil()">Se connecter</button>
+      </div>`}
       <div class="hist-liste" id="hist-liste"></div>
     </div>
   `;

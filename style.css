@@ -1027,7 +1027,27 @@ body.mode-topo .marqueur.visite{border-color:#fff;box-shadow:0 0 0 3px #2f9560,0
 .profil-fermer:hover{color:var(--txt);border-color:var(--txt3)}
 .profil-corps{flex:1;overflow-y:auto;padding:16px}
 
-/* ── Bouton Google Maps sous les coordonnées ── */
+/* ── Bloc compte (email + déconnexion) en haut du profil ── */
+.profil-compte{
+  display:flex;align-items:center;justify-content:space-between;gap:10px;
+  background:var(--noir-3);border:1px solid var(--ligne);border-radius:12px;
+  padding:11px 13px;margin-bottom:18px;
+}
+.profil-compte-email{font-size:12.5px;color:var(--txt2);font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.profil-compte-deco{
+  background:none;border:1px solid var(--ligne);color:var(--txt3);
+  border-radius:8px;padding:6px 10px;font-size:11.5px;font-weight:600;font-family:inherit;
+  cursor:pointer;white-space:nowrap;transition:color .15s,border-color .15s;
+}
+.profil-compte-deco:hover{color:var(--corail);border-color:color-mix(in srgb,var(--corail) 45%,transparent)}
+
+/* ── Message "connecte-toi" dans la fiche refuge, à la place du formulaire d'ajout ── */
+.hist-connexion{
+  background:var(--noir-3);border:1px solid var(--ligne);border-radius:12px;
+  padding:16px;text-align:center;margin-bottom:14px;
+}
+.hist-connexion p{font-size:12.5px;color:var(--txt2);line-height:1.5;margin-bottom:12px}
+
 .d-gmaps{
   display:flex;align-items:center;justify-content:center;gap:8px;
   margin-top:10px;padding:10px;border-radius:10px;
