@@ -125,6 +125,7 @@ async function charger(){
     r._i=i;
     r._cle=`${r.nom}|${r.lat.toFixed(4)},${r.lon.toFixed(4)}`;
   });
+  await chargerPassagesDepuisSupabase();
   if(REFUGES.length===0){
     document.getElementById('liste').innerHTML=`<div class="etat">Impossible de charger les données.<br><br>Vérifie que <code>SUPABASE_URL</code> / <code>SUPABASE_ANON_KEY</code> sont bien renseignées dans <code>config.js</code>, et que la table <code>refuges</code> contient des données (voir <code>outils/importer-supabase.mjs</code>).</div>`;
     return;

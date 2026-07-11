@@ -22,17 +22,16 @@ function fermerProfil() {
 function rendreProfilComplet() {
   const box = document.getElementById('profil-panneau');
 
-  const tousPassages = chargerPassages();   // {_cle: [{date,com,balises,id},...]}
-  const clesVisitees = Object.keys(tousPassages).filter(k => tousPassages[k].length > 0);
+  const clesVisitees = Object.keys(PASSAGES).filter(k => PASSAGES[k].length > 0);
 
   // Refuges visités (croisement avec REFUGES)
-  const refugesVisites = REFUGES.filter(r => clesVisitees.includes(r._cle));
+  const refugesVisites = REFUGES.filter(r => clesVisitees.includes(r.id));
   const nbVisites      = refugesVisites.length;
   const nbTotal        = REFUGES.length;
 
   // Tous les passages à plat
   const tousLesPassages = clesVisitees.flatMap(k =>
-    tousPassages[k].map(p => ({...p, _cle: k}))
+    PASSAGES[k].map(p => ({...p, refuge_id: k}))
   ).sort((a, b) => b.date.localeCompare(a.date));
 
   const nbPassages = tousLesPassages.length;
@@ -127,7 +126,7 @@ function rendreProfilComplet() {
   if (derniersPassages.length) {
     html += `<div class="profil-section"><h3>Derniers passages</h3>`;
     derniersPassages.forEach(p => {
-      const r = REFUGES.find(r => r._cle === p._cle);
+      const r = REFUGES.find(r => r.id === p.refuge_id);
       if (!r) return;
       const bals = (p.balises || []).map(id => {
         const info = BALISE_INFO[id];

@@ -1,44 +1,51 @@
 // =============================================================================
-// passages.js — Historique des passages
+// passages.js — Historique des passages (partagé via Supabase — table
+// `passages`, voir outils/schema-supabase.sql). PASSAGES est un cache local
+// {refuge_id: [{id,date,com,balises}, ...]} rechargé au démarrage, pour que
+// l'affichage (listes, marqueurs) reste synchrone comme avant.
 // =============================================================================
 
-function chargerPassages(){
-  try{ return JSON.parse(localStorage.getItem(CLE_PASSAGES)||'{}'); }catch(e){ return {}; }
+let PASSAGES = {};
+
+async function chargerPassagesDepuisSupabase(){
+  try{
+    const { data, error } = await supabaseClient.from('passages').select('*');
+    if(error) throw error;
+    PASSAGES = {};
+    (data||[]).forEach(p=>{
+      if(!PASSAGES[p.refuge_id]) PASSAGES[p.refuge_id]=[];
+      PASSAGES[p.refuge_id].push({ id:p.id, date:p.date, com:p.commentaire||'', balises:p.balises||[] });
+    });
+  }catch(e){
+    console.warn('Chargement des passages échoué:',e);
+    PASSAGES = {};
+  }
 }
 
-function sauverPassages(p){
-  try{ localStorage.setItem(CLE_PASSAGES,JSON.stringify(p)); }catch(e){ alert("Sauvegarde impossible (stockage indisponible)."); }
+function passagesDe(refugeId){
+  return (PASSAGES[refugeId]||[]).slice().sort((a,b)=>b.date.localeCompare(a.date));
 }
 
-function passagesDe(cle){
-  const tout=chargerPassages();
-  return (tout[cle]||[]).slice().sort((a,b)=>b.date.localeCompare(a.date));
-}
+function estVisite(r){ return passagesDe(r.id).length>0; }
 
-function estVisite(r){ return passagesDe(r._cle).length>0; }
-
-function ajouterPassage(i){
+async function ajouterPassage(i){
   const r=REFUGES[i];
   const date=document.getElementById('hist-date').value;
   const com=document.getElementById('hist-com').value.trim();
   const balises=[...document.querySelectorAll('#hist-balises .balise-btn.actif')].map(b=>b.dataset.bal);
   if(!date){ alert("Choisis une date."); return; }
   if(!com && balises.length===0){ alert("Ajoute au moins une balise ou un commentaire."); return; }
-  const tout=chargerPassages();
-  if(!tout[r._cle]) tout[r._cle]=[];
-  tout[r._cle].push({date,com,balises,id:Date.now()});
-  sauverPassages(tout);
+
+  const { data, error } = await supabaseClient.from('passages')
+    .insert({ refuge_id:r.id, date, commentaire:com||null, balises:balises.length?balises:null })
+    .select().single();
+  if(error){ alert("Impossible d'enregistrer ce passage sur le serveur : "+error.message); return; }
+
+  if(!PASSAGES[r.id]) PASSAGES[r.id]=[];
+  PASSAGES[r.id].push({ id:data.id, date:data.date, com:data.commentaire||'', balises:data.balises||[] });
+
   document.getElementById('hist-com').value='';
   document.querySelectorAll('#hist-balises .balise-btn.actif').forEach(b=>b.classList.remove('actif'));
-  rendrePassages(i);
-  rafraichirMarqueur(i);
-  appliquer();
-}
-
-function supprimerPassage(i,id){
-  const r=REFUGES[i];
-  const tout=chargerPassages();
-  if(tout[r._cle]){ tout[r._cle]=tout[r._cle].filter(p=>p.id!==id); sauverPassages(tout); }
   rendrePassages(i);
   rafraichirMarqueur(i);
   appliquer();
@@ -48,7 +55,7 @@ function rendrePassages(i){
   const r=REFUGES[i];
   const liste=document.getElementById('hist-liste');
   if(!liste) return;
-  const passages=passagesDe(r._cle);
+  const passages=passagesDe(r.id);
   if(passages.length===0){
     liste.innerHTML='<div class="hist-vide">Aucun passage enregistré pour l\'instant.</div>';
     return;
@@ -72,7 +79,6 @@ function rendrePassages(i){
     }).join('');
     return `
     <div class="hist-item">
-      <button class="hist-suppr" onclick="supprimerPassage(${i},${p.id})" title="Supprimer">&times;</button>
       <div class="hist-item-date">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
         ${fmtDate(p.date)}
@@ -82,4 +88,5 @@ function rendrePassages(i){
     </div>`;
   }).join('');
 }
+
 
