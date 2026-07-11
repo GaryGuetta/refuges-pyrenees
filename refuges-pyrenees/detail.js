@@ -32,6 +32,7 @@ function afficherDetail(r){
   // Grille d'infos : les cases toujours présentes + les nouvelles, seulement si on a la donnée
   const cellules=[
     {l:'Altitude', v:r.alt?r.alt+' m':'—'},
+    {l:'Places', v:r.places||'—'},
     {l:'Eau à proximité', v:eau||'—', couleur:eau==='Oui'?'var(--cyan)':eau==='Non'?'var(--texte-3)':'var(--texte)'},
     {l:'Bois', v:bois||'—', couleur:bois==='Oui'?'var(--ambre)':bois==='Non'?'var(--texte-3)':'var(--texte)'},
   ];

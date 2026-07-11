@@ -75,6 +75,7 @@ async function main(){
       id: r.id,
       altitude: entier(r.altitude),
       region: r.region,
+      places: r.places,
       eau: r.eau,
       bois: r.bois,
       type_num: entier(r.type_num),
@@ -101,16 +102,8 @@ async function main(){
     const lot=lignesCompletes.slice(i,i+TAILLE_LOT);
     const { error } = await supabase.from('refuges').upsert(lot, { onConflict: 'id' });
     if (error){
-      console.error(`\n✗ Échec du lot ${i}-${i+lot.length} (${error.message}) — recherche de la ligne fautive…`);
-      // Retente une par une pour identifier précisément le/les coupable(s)
-      for (const ligne of lot){
-        const { error: errUne } = await supabase.from('refuges').upsert([ligne], { onConflict: 'id' });
-        if (errUne){
-          echecs++;
-          console.error(`  ✗ ${ligne.id} :`, errUne.message);
-          console.error('    contenu :', JSON.stringify(ligne));
-        } else ok++;
-      }
+      echecs+=lot.length;
+      console.error(`✗ Échec du lot ${i}-${i+lot.length} :`, error.message);
     } else {
       ok+=lot.length;
       process.stdout.write(`\r  ${ok}/${lignesCompletes.length} importés…`);

@@ -118,6 +118,7 @@ async function charger(){
       alt:r.altitude,
       region:r.region,
       departement: r.departement || (['Andorre','Aragon','Catalonia','Navarre'].includes(r.region) ? r.region : departementDe(r.lat,r.lon)),
+      places:r.places,
       eau:r.eau, bois:r.bois, eauMois:r.eau_mois,
       typeNum:r.type_num,
       cat:r.categorie,

@@ -1,0 +1,9 @@
+{
+  "name": "refuges-pyrenees-outils",
+  "private": true,
+  "type": "module",
+  "description": "Scripts de génération/import de données pour refuges-pyrenees (le site lui-même n'a pas besoin de build).",
+  "dependencies": {
+    "@supabase/supabase-js": "^2"
+  }
+}

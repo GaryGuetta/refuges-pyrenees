@@ -48,6 +48,7 @@ function ouvrirFiche(i){
 
         <div class="fiche-grille">
           <div class="fiche-stat"><div class="fiche-stat-num">${r.alt ? r.alt+' m' : '—'}</div><div class="fiche-stat-lbl">Altitude</div></div>
+          <div class="fiche-stat"><div class="fiche-stat-num">${r.places || '—'}</div><div class="fiche-stat-lbl">Places</div></div>
           <div class="fiche-stat"><div class="fiche-stat-num" id="fiche-cell-eau-proximite" style="color:${eau==='Oui'?'var(--eau)':'var(--txt)'}">${eau || '—'}</div><div class="fiche-stat-lbl">Eau à proximité</div></div>
           <div class="fiche-stat"><div class="fiche-stat-num" style="color:${bois==='Oui'?'var(--accent)':'var(--txt)'}">${bois || '—'}</div><div class="fiche-stat-lbl">Bois</div></div>
           ${statsSupp.map(s=>`<div class="fiche-stat"><div class="fiche-stat-num"${s.couleur?` style="color:${s.couleur}"`:''}>${s.v}</div><div class="fiche-stat-lbl">${s.l}</div></div>`).join('')}

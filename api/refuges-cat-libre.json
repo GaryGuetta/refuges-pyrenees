@@ -2,12 +2,15 @@
  "meta": {
   "source": "pyrenees-refuges.com",
   "licence": "Données © pyrenees-refuges.com — merci de conserver l’attribution",
-  "genere_le": "2026-07-11T00:35:49.771Z",
+  "genere_le": "2026-07-11T04:58:00.863Z",
   "nombre": 0,
   "regions": [
    "Andorre",
    "Occitanie",
-   "Nouvelle-Aquitaine"
+   "Nouvelle-Aquitaine",
+   "Aragon",
+   "Catalonia",
+   "Navarre"
   ],
   "categories": {
    "refuge": "Refuge gardé",

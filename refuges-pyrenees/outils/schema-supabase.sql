@@ -49,10 +49,6 @@ alter table refuges add column if not exists cheminee text;
 alter table refuges add column if not exists couchage text;
 alter table refuges add column if not exists rando text;
 
--- La colonne "places" (générique) est remplacée par cap_ete / cap_hiver
--- (plus précis, issus du CSV complémentaire). À exécuter une fois.
-alter table refuges drop column if exists places;
-
 
 -- =============================================================================
 -- Historique des passages (commentaires + balises laissés sur un refuge)
