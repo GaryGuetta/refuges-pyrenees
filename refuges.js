@@ -141,5 +141,6 @@ async function charger(){
     return;
   }
   initialiser();
+  rendreDepartements();
 }
 

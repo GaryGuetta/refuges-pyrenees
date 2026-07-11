@@ -6,7 +6,7 @@ function ouvrirProfil() {
   document.getElementById('liste').style.display        = 'none';
   document.getElementById('filtres-bloc').style.display  = 'none';
   document.querySelector('.stats').style.display          = 'none';
-  const avis=document.getElementById('avis-construction'); if(avis) avis.style.display='none';
+  const deps=document.getElementById('departements'); if(deps) deps.style.display='none';
   document.getElementById('profil-panneau').classList.add('ouvert');
   rendreProfilComplet();
 }
@@ -15,7 +15,7 @@ function fermerProfil() {
   document.getElementById('profil-panneau').classList.remove('ouvert');
   document.getElementById('filtres-bloc').style.display = '';
   document.querySelector('.stats').style.display          = '';
-  const avis=document.getElementById('avis-construction'); if(avis) avis.style.display='';
+  const deps=document.getElementById('departements'); if(deps) deps.style.display='';
   document.getElementById('liste').style.display        = '';
 }
 

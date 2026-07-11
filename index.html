@@ -39,15 +39,7 @@
     <div class="stats">
       <div class="stat stat-unique"><div class="stat-num c" id="s-total">—</div><div class="stat-lbl">Lieux référencés</div></div>
     </div>
-    <div class="avis-construction" id="avis-construction">
-      <div class="avis-ico">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0Z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
-      </div>
-      <div class="avis-txt">
-        <strong>Site en construction</strong> — infos collectées automatiquement, <b>à vérifier avant de partir</b>.
-      </div>
-      <button class="avis-fermer" onclick="document.getElementById('avis-construction').style.display='none'" title="Masquer">&times;</button>
-    </div>
+    <div class="departements" id="departements"></div>
     <div class="liste" id="liste"><div class="etat"><div class="spin"></div>Chargement des refuges…<div class="progres" id="progres"></div></div></div>
     <div class="profil-panneau" id="profil-panneau"></div>
   </aside>
@@ -256,6 +248,7 @@
   <script src="fiche.js"></script>
   <script src="gpx.js"></script>
   <script src="refuges.js"></script>
+  <script src="departements.js"></script>
   <script src="geoloc.js"></script>
   <script src="meteo.js"></script>
   <script src="profil.js"></script>
