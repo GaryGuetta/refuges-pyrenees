@@ -47,10 +47,27 @@ function initialiser(){
     m.on('click',()=>selectionner(i,true));
     m._refIndex=i;
     marqueurs[i]=m;
-    cluster.addLayer(m);
+    // On n'ajoute PAS tous les marqueurs d'un coup (1600+ = carte qui rame).
+    // L'affichage est piloté par la zone active (voir zones.js) : seuls les
+    // marqueurs de la zone sélectionnée sont posés sur la carte.
   });
   document.getElementById('s-total').textContent=REFUGES.length;
+  majMarqueursVisibles();
   appliquer();
+  if(typeof initZoneParDefaut==='function') initZoneParDefaut();
+}
+
+// Ajoute au cluster uniquement les marqueurs de la zone active.
+function majMarqueursVisibles(){
+  if(!cluster) return;
+  cluster.clearLayers();
+  const zone = (typeof zoneActive!=='undefined') ? zoneActive : null;
+  if(!zone) return;
+  const aAfficher = [];
+  REFUGES.forEach((r,i)=>{
+    if(typeof zoneDe==='function' && zoneDe(r)===zone) aAfficher.push(marqueurs[i]);
+  });
+  cluster.addLayers(aAfficher);
 }
 function rafraichirMarqueur(i){
   const r=REFUGES[i],m=marqueurs[i];
@@ -125,9 +142,11 @@ function initCarte(){
     sombre:{
       nom:'Sombre', clair:false,
       couche: L.layerGroup([
-        // fond sombre de base
-        L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager_nolabels/{z}/{x}/{y}{r}.png',
-          {maxZoom:20, attribution:'© OpenStreetMap, © CARTO', className:'fond-inverse'}),
+        // fond sombre de base — vrai fond sombre CartoDB, pas de filtre CSS
+        // (l'inversion CSS d'un fond clair coûtait très cher au rendu pendant
+        // les déplacements de carte : recalcul du filtre sur chaque tuile)
+        L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_nolabels/{z}/{x}/{y}{r}.png',
+          {maxZoom:20, attribution:'© OpenStreetMap, © CARTO'}),
         // ombrage du relief (Esri, fiable) pour donner du volume
         L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/Elevation/World_Hillshade_Dark/MapServer/tile/{z}/{y}/{x}',
           {maxZoom:16, opacity:0.5, className:'couche-hillshade'}),
@@ -142,12 +161,35 @@ function initCarte(){
   L.control.scale({imperial:false,metric:true,position:'bottomleft',maxWidth:160}).addTo(map);
   cluster=L.markerClusterGroup({
     maxClusterRadius:45,
+    chunkedLoading:true,
+    chunkInterval:100,
+    chunkDelay:30,
     iconCreateFunction:c=>L.divIcon({html:`<div class="cluster" style="width:38px;height:38px">${c.getChildCount()}</div>`,className:'',iconSize:[38,38]})
   });
   map.addLayer(cluster);
   map.on('click',onClickCarte);
-  initPlanificateur();
+  map.attributionControl.addAttribution('<a href="legal/mentions-legales.html">Mentions légales</a> · <a href="legal/confidentialite.html">Confidentialité</a>');
   charger();
+
+  alignerAutourMoiSurZoom();
+  window.addEventListener('resize', alignerAutourMoiSurZoom);
+}
+
+// Aligne précisément le bouton "Autour de moi" sur le contrôle de zoom de
+// Leaflet, en mesurant sa position réelle à l'écran (Leaflet ajoute ses
+// propres marges internes qu'on ne maîtrise pas depuis le CSS seul, donc le
+// calcul en pixels fixes ne tombait jamais juste).
+function alignerAutourMoiSurZoom(){
+  const zoom = document.querySelector('.leaflet-control-zoom');
+  const bouton = document.querySelector('.autour-moi');
+  if(!zoom || !bouton) return;
+  requestAnimationFrame(()=>{
+    const rz = zoom.getBoundingClientRect();
+    const centreZoomX = rz.left + rz.width/2;
+    const largeurBouton = bouton.offsetWidth;
+    const rightActuel = window.innerWidth - (centreZoomX + largeurBouton/2);
+    bouton.style.right = Math.round(rightActuel) + 'px';
+  });
 }
 
 // ---------- Bascule thème clair/sombre ----------

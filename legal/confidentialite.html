@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Confidentialité — Refuges des Pyrénées</title>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{--fond:#101114;--panneau:#17181c;--panneau-2:#1d1f24;--ligne:rgba(255,255,255,.09);
+    --txt:#f3f1ea;--txt2:#a9a59b;--txt3:#6f6c64;--accent:#f0a04b;--eau:#5aa9dc}
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{font-family:'Outfit',system-ui,sans-serif;background:var(--fond);color:var(--txt);line-height:1.65}
+  .page{max-width:680px;margin:0 auto;padding:48px 24px 80px}
+  .retour{color:var(--txt3);text-decoration:none;font-size:13px}
+  .retour:hover{color:var(--accent)}
+  h1{font-size:28px;font-weight:700;letter-spacing:-.02em;margin:18px 0 6px}
+  h1 span{color:var(--accent)}
+  .sous{color:var(--txt2);font-size:14px;margin-bottom:36px}
+  h2{font-size:17px;font-weight:600;margin:36px 0 10px}
+  p{color:var(--txt2);font-size:14px;margin-bottom:10px}
+  ul{color:var(--txt2);font-size:14px;margin:8px 0 8px 20px}
+  li{margin-bottom:6px}
+  a{color:var(--eau)}
+  strong{color:var(--txt)}
+  table{width:100%;border-collapse:collapse;font-size:13.5px;margin:14px 0}
+  th{text-align:left;color:var(--txt3);font-weight:600;font-size:11px;text-transform:uppercase;letter-spacing:.05em;padding:8px 10px;border-bottom:1px solid var(--ligne)}
+  td{padding:10px;border-bottom:1px solid var(--ligne);color:var(--txt2);vertical-align:top}
+</style>
+</head>
+<body>
+<div class="page">
+  <a class="retour" href="../index.html">← Retour à la carte</a>
+  <h1>Politique de <span>confidentialité</span></h1>
+  <p class="sous">Refuges des Pyrénées — dernière mise à jour : juillet 2026.</p>
+
+  <h2>Qui traite tes données ?</h2>
+  <p>Ce site est édité par un particulier (voir <a href="mentions-legales.html">mentions légales</a>).
+  Les données sont stockées via Supabase (base de données et authentification) et le site est servi par
+  Vercel. Ces deux prestataires peuvent traiter des données techniques (adresse IP, journaux de connexion)
+  dans le cadre de leur propre fonctionnement, indépendamment de l'éditeur du site.</p>
+
+  <h2>Quelles données sont collectées ?</h2>
+  <table>
+    <tr><th>Donnée</th><th>Quand</th><th>Pourquoi</th></tr>
+    <tr><td>Email + mot de passe (chiffré)</td><td>Création d'un compte</td><td>Te connecter et retrouver tes refuges visités</td></tr>
+    <tr><td>Historique des passages (date, commentaire, balises)</td><td>Ajout d'un passage sur un refuge</td><td>Suivi personnel + information partagée avec les autres visiteurs</td></tr>
+    <tr><td>Modifications de fiches refuge</td><td>Édition d'un lieu</td><td>Amélioration collaborative des données</td></tr>
+    <tr><td>Nom, email, message</td><td>Envoi du formulaire de contact</td><td>Te répondre</td></tr>
+    <tr><td>Position GPS</td><td>Utilisation du bouton "Autour de moi" (sur autorisation du navigateur)</td><td>Afficher les refuges proches — jamais envoyée ni stockée sur un serveur</td></tr>
+  </table>
+
+  <h2>Combien de temps ces données sont conservées ?</h2>
+  <p>Les données de compte et l'historique des passages sont conservés tant que le compte existe. Les
+  messages du formulaire de contact sont conservés le temps de traiter la demande, puis supprimés
+  périodiquement.</p>
+
+  <h2>Qui peut voir quoi ?</h2>
+  <ul>
+    <li>Les <strong>informations de refuge</strong> (nom, position, équipements...) sont publiques par nature.</li>
+    <li>L'<strong>historique des passages</strong> (dates, commentaires, balises) est visible par tous
+    les visiteurs du site — c'est fait pour partager l'état récent d'un lieu. Seul le nom d'utilisateur
+    n'y est pas affiché.</li>
+    <li>Les <strong>messages du formulaire de contact</strong> ne sont visibles que par l'éditeur du site.</li>
+    <li>Ton <strong>email de compte</strong> n'est jamais affiché publiquement.</li>
+  </ul>
+
+  <h2>Tes droits</h2>
+  <p>Conformément au RGPD, tu peux à tout moment demander :</p>
+  <ul>
+    <li>l'<strong>accès</strong> aux données te concernant,</li>
+    <li>leur <strong>rectification</strong> si elles sont inexactes,</li>
+    <li>leur <strong>suppression</strong>,</li>
+    <li>la <strong>limitation</strong> ou l'<strong>opposition</strong> à leur traitement,</li>
+    <li>la <strong>portabilité</strong> de tes données.</li>
+  </ul>
+  <p>Pour exercer ces droits, utilise le <a href="mentions-legales.html">formulaire de contact</a>. Tu
+  peux aussi introduire une réclamation auprès de la CNIL (<a href="https://www.cnil.fr" target="_blank" rel="noopener">cnil.fr</a>).</p>
+
+  <h2>Cookies</h2>
+  <p>Le site utilise uniquement des cookies techniques nécessaires à la connexion (session Supabase).
+  Aucun cookie publicitaire ou de mesure d'audience tiers n'est utilisé.</p>
+</div>
+</body>
+</html>

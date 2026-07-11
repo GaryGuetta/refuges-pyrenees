@@ -17,8 +17,6 @@ const TYPE_LABEL = {
   5:"Refuge gardé l'été, partie hivernale",
   6:"Refuge gardé toute l'année", 7:'Ruine'
 };
-let MARGE_GPX = 500;
-const MARGE_REFUGE = 500;
 const RAYON_EAU = 1000;
 const CLE_STOCKAGE = 'refuges_modifications_v1';
 const CLE_PASSAGES  = 'refuges_passages_v1';

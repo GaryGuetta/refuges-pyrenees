@@ -47,7 +47,7 @@ function selectionner(i,recadrer){
   if(actif!==null&&marqueurs[actif]){const e=marqueurs[actif].getElement();if(e)e.querySelector('.marqueur')?.classList.remove('actif')}
   const el=marqueurs[i].getElement();if(el)el.querySelector('.marqueur')?.classList.add('actif');
 
-  if(typeof fermerPlanificateur==='function') fermerPlanificateur();
+  if(typeof fermerFiche==='function') fermerFiche();
   document.querySelector('.app').classList.add('detail-ouvert');
   afficherDetail(r);
   setTimeout(()=>map.invalidateSize(),320);
@@ -141,6 +141,5 @@ async function charger(){
     return;
   }
   initialiser();
-  rendreDepartements();
 }
 

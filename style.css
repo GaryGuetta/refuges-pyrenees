@@ -48,20 +48,10 @@
 
   .panneau{background:var(--noir-2);border-right:1px solid var(--bord);display:flex;flex-direction:column;overflow:hidden}
   .entete{padding:22px 18px 16px;border-bottom:1px solid var(--bord)}
-
-  .avis-construction{display:flex;gap:10px;align-items:flex-start;padding:12px 14px;background:rgba(201,161,94,.08);border-bottom:1px solid var(--bord);position:relative}
-  .avis-ico{color:var(--ambre);flex-shrink:0;margin-top:1px}
-  .avis-ico svg{width:18px;height:18px}
-  .avis-txt{font-size:11.5px;color:var(--texte-2);line-height:1.5;padding-right:14px}
-  .avis-txt strong{display:block;color:var(--ambre);font-size:12px;margin-bottom:2px;font-weight:700}
-  .avis-txt b{color:var(--texte);font-weight:600}
-  .avis-fermer{position:absolute;top:8px;right:9px;background:none;border:none;color:var(--texte-3);font-size:17px;line-height:1;cursor:pointer;padding:2px}
-  .avis-fermer:hover{color:var(--texte)}
   .logo{display:flex;align-items:center;gap:11px;margin-bottom:4px}
   .logo-mark svg{width:34px;height:34px;display:block}
   .logo h1{font-size:18px;font-weight:700;letter-spacing:-0.02em;line-height:1}
   .logo h1 span{color:var(--vert)}
-  .sous-titre{font-size:12px;color:var(--texte-3);margin-left:45px}
 
   .stats{display:flex;padding:14px 18px;border-bottom:1px solid var(--bord)}
   .stat{flex:1}
@@ -74,9 +64,6 @@
     background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='15' height='15' viewBox='0 0 24 24' fill='none' stroke='%235c626b' stroke-width='2.2' stroke-linecap='round'%3E%3Ccircle cx='11' cy='11' r='7'/%3E%3Cpath d='m20 20-3.5-3.5'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:13px center;transition:border-color .18s,box-shadow .18s}
   .recherche::placeholder{color:var(--texte-3)}
   .recherche:focus{outline:none;border-color:var(--cyan);box-shadow:0 0 0 3px rgba(94,186,125,.12)}
-  .puces{display:flex;gap:7px;margin-top:12px;flex-wrap:wrap}
-  .puce{background:transparent;border:1px solid var(--bord);color:var(--texte-2);border-radius:20px;padding:5px 12px;font-size:12px;font-family:inherit;cursor:pointer;transition:all .15s;font-weight:500}
-  .puce:hover{border-color:var(--texte-3);color:var(--texte)}
   .puce.actif{background:var(--cyan);border-color:var(--cyan);color:var(--noir);font-weight:600}
   .puce.actif[data-f="refuge"]{background:var(--corail);border-color:var(--corail)}
   .puce.actif[data-f="cabane"]{background:var(--ambre);border-color:var(--ambre)}
@@ -101,8 +88,6 @@
   .tag.cabane{background:color-mix(in srgb,var(--c-cabane) 16%,transparent);color:var(--c-cabane)}
   .tag.ruine{background:color-mix(in srgb,var(--c-ruine) 16%,transparent);color:var(--c-ruine)}
   .cr-region{font-size:11px;color:var(--texte-2)}
-
-  .zone-carte{position:relative}
   #map{width:100%;height:100%;background:var(--noir)}
 
   .basculer-fond{
@@ -119,37 +104,6 @@
   .autour-moi:hover{border-color:var(--cyan);color:var(--cyan)}
   .autour-moi svg{width:16px;height:16px}
   .autour-moi.charge svg{animation:r 1s linear infinite}
-
-  .import-gpx{position:absolute;top:106px;right:18px;z-index:1000;display:flex;align-items:center;gap:8px;background:var(--noir-2);border:1px solid var(--bord);color:var(--texte);border-radius:10px;padding:9px 14px;font-size:13px;font-family:inherit;font-weight:600;cursor:pointer;transition:all .15s;box-shadow:0 4px 16px rgba(0,0,0,.4)}
-  .import-gpx:hover{border-color:var(--cyan);color:var(--cyan)}
-  .import-gpx svg{width:16px;height:16px}
-  .import-gpx.charge svg{animation:r 1s linear infinite}
-
-  .gpx-panneau{position:absolute;top:18px;left:18px;z-index:1000;width:300px;max-height:calc(100% - 36px);background:var(--noir-2);border:1px solid var(--bord);border-radius:12px;box-shadow:0 8px 30px rgba(0,0,0,.5);display:none;flex-direction:column;overflow:hidden}
-  .gpx-panneau.ouvert{display:flex}
-  .gpx-tete{display:flex;align-items:center;justify-content:space-between;padding:13px 15px;border-bottom:1px solid var(--bord);font-weight:700;font-size:14px}
-  .gpx-fermer{background:none;border:none;color:var(--texte-3);font-size:20px;line-height:1;cursor:pointer;padding:0 2px}
-  .gpx-fermer:hover{color:var(--texte)}
-  .gpx-stats{padding:11px 15px;border-bottom:1px solid var(--bord);font-size:12px;color:var(--texte-2);display:flex;gap:14px;flex-wrap:wrap}
-  .gpx-stats b{color:var(--cyan);font-weight:700}
-  .gpx-marge{font-size:11px;color:var(--texte-3)}
-  .gpx-marge a{color:var(--cyan);cursor:pointer;text-decoration:underline}
-  .gpx-resultats{overflow-y:auto;padding:6px}
-  .gpx-resultats::-webkit-scrollbar{width:7px}
-  .gpx-resultats::-webkit-scrollbar-thumb{background:var(--bord);border-radius:4px}
-  .gpx-sec-titre{font-size:10px;color:var(--texte-3);text-transform:uppercase;letter-spacing:.05em;font-weight:700;padding:10px 9px 6px}
-  .gpx-item{display:flex;align-items:center;gap:10px;padding:9px;border-radius:9px;cursor:pointer;transition:background .14s}
-  .gpx-item:hover{background:var(--noir-3)}
-  .gpx-pastille{width:11px;height:11px;border-radius:50%;flex-shrink:0}
-  .gpx-pastille.refuge{background:var(--c-refuge)}.gpx-pastille.libre{background:var(--c-libre)}.gpx-pastille.cabane{background:var(--c-cabane)}.gpx-pastille.ruine{background:var(--c-ruine)}.gpx-pastille.eau{background:var(--eau)}.gpx-pastille.potable{background:var(--eau-potable)}
-  .gpx-pastille.zone{border-radius:2px;width:13px;height:9px}
-  .gpx-item-txt{flex:1;min-width:0}
-  .gpx-item-nom{font-size:13px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-  .gpx-item-sous{font-size:11px;color:var(--texte-3)}
-  .gpx-item-km{font-size:11px;color:var(--cyan);font-weight:700;white-space:nowrap;font-variant-numeric:tabular-nums}
-  .gpx-vide{padding:18px 15px;font-size:12px;color:var(--texte-3);text-align:center;line-height:1.5}
-  .gpx-charge{padding:18px 15px;font-size:12px;color:var(--texte-3);text-align:center;display:flex;align-items:center;justify-content:center;gap:8px}
-  @media(max-width:760px){.gpx-panneau{width:calc(100% - 36px)}}
   .marqueur-moi{width:18px;height:18px;border-radius:50%;background:#4a9eff;border:3px solid #fff;box-shadow:0 0 0 4px rgba(74,158,255,.3),0 0 14px rgba(74,158,255,.6)}
 
   /* en mode topo (fond clair), on renforce la bordure des marqueurs */
@@ -187,15 +141,8 @@
   .leaflet-popup-close-button{color:var(--texte-3)!important;font-size:20px!important;padding:11px 11px 0 0!important}
   .leaflet-popup-close-button:hover{color:var(--texte)!important}
   .pop{padding:17px}
-  .pop-nom{font-size:16px;font-weight:700;letter-spacing:-0.02em;margin-bottom:3px;padding-right:14px;line-height:1.3}
-  .pop-region{font-size:12px;color:var(--cyan);margin-bottom:13px;font-weight:500}
-  .pop-grille{display:grid;grid-template-columns:1fr 1fr;gap:11px 8px}
   .pop-cell .l{font-size:10px;color:var(--texte-3);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:3px}
   .pop-cell .v{font-size:14px;font-weight:600;font-variant-numeric:tabular-nums}
-  .pop-desc{font-size:12px;color:var(--texte-2);line-height:1.6;margin-top:13px;padding-top:13px;border-top:1px solid var(--bord);max-height:130px;overflow-y:auto}
-  .pop-edit{display:inline-flex;align-items:center;gap:6px;margin-top:14px;background:var(--noir-3);border:1px solid var(--bord);color:var(--texte-2);border-radius:8px;padding:7px 13px;font-size:12px;font-family:inherit;font-weight:600;cursor:pointer;transition:all .15s}
-  .pop-edit:hover{border-color:var(--cyan);color:var(--cyan)}
-  .pop-edit svg{width:13px;height:13px}
 
   /* modal édition */
   .overlay{position:fixed;inset:0;background:rgba(5,6,9,.78);backdrop-filter:blur(4px);z-index:2000;display:none;align-items:center;justify-content:center;padding:20px}
@@ -325,19 +272,9 @@
   .hist-item-com{font-size:13px;color:var(--texte-2);line-height:1.55;white-space:pre-wrap;word-break:break-word}
   .hist-suppr{position:absolute;top:10px;right:10px;background:none;border:none;color:var(--texte-3);cursor:pointer;font-size:15px;line-height:1;padding:2px;opacity:.6;transition:all .15s}
   .hist-suppr:hover{color:var(--corail);opacity:1}
-  .hist-vide{font-size:12px;color:var(--texte-3);font-style:italic;text-align:center;padding:14px 0}
-
-  /* (ancienne règle mobile obsolète supprimée — remplacée par le bloc
-     "Responsive mobile" en bas du fichier, qui gère proprement le panneau
-     flottant, la liste et les drawers sur petit écran) */
-
-
-/* ---------- Météo ---------- */
-.meteo-bloc{padding:18px 22px;border-bottom:1px solid var(--bord)}
-.meteo-titre{font-size:11px;color:var(--texte-3);text-transform:uppercase;letter-spacing:.07em;font-weight:700;margin-bottom:14px;display:flex;align-items:center;justify-content:space-between}
-.meteo-titre a{font-size:10px;color:var(--cyan);text-decoration:none;font-weight:600;text-transform:none;letter-spacing:0}
-.meteo-titre a:hover{text-decoration:underline}
-.meteo-load{font-size:12px;color:var(--texte-3);display:flex;align-items:center;gap:8px}
+  .hist-vide{font-size:12px;color:var(--texte-3);font-style:italic;text-align:center;padding:14px 0}/* (ancienne règle mobile obsolète supprimée — remplacée par le bloc
+     "Responsive mobile" en bas du fichier,qui gère proprement le panneau
+     flottant{padding:18px 22px;border-bottom:1px solid var(--bord)}
 .meteo-err{font-size:12px;color:var(--texte-3);font-style:italic}
 
 /* Aujourd'hui */
@@ -360,20 +297,6 @@
 .meteo-jour-min{font-size:11px;color:var(--texte-3)}
 .meteo-jour-pluie{font-size:10px;color:#74b9ff;margin-top:3px}
 .meteo-src{font-size:10px;color:var(--texte-3);margin-top:10px}
-
-/* ---------- Profil ---------- */
-.profil-btn{
-  display:flex;align-items:center;gap:8px;padding:14px 18px;
-  border-top:1px solid var(--bord);cursor:pointer;
-  font-size:13px;font-weight:600;color:var(--texte-2);
-  background:none;border-left:none;border-right:none;border-bottom:none;
-  font-family:inherit;width:100%;text-align:left;transition:all .15s;
-}
-.profil-btn:hover{color:var(--cyan);background:var(--noir-3)}
-.profil-btn svg{width:16px;height:16px;flex-shrink:0}
-
-/* Panneau profil (remplace la liste) */
-.profil-panneau-old-1{display:none}
 .profil-panneau.ouvert{display:block}
 .profil-panneau::-webkit-scrollbar{width:8px}
 .profil-panneau::-webkit-scrollbar-thumb{background:var(--bord);border-radius:4px}
@@ -406,11 +329,6 @@
 .profil-passage-balises{display:flex;flex-wrap:wrap;gap:4px}
 .profil-vide{font-size:13px;color:var(--texte-3);font-style:italic;text-align:center;padding:20px 0}
 
-/* Bouton retour */
-.profil-retour{display:flex;align-items:center;gap:7px;color:var(--texte-3);font-size:12px;font-weight:600;cursor:pointer;margin-bottom:18px;background:none;border:none;font-family:inherit;padding:0}
-.profil-retour:hover{color:var(--texte)}
-.profil-retour svg{width:14px;height:14px}
-
 /* Balises fréquentes */
 .profil-balise-row{display:flex;align-items:center;gap:10px;margin-bottom:8px}
 .profil-balise-nom{font-size:12px;color:var(--texte-2);width:130px;flex-shrink:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
@@ -418,132 +336,6 @@
 .profil-balise-fill{height:100%;border-radius:6px;background:var(--cyan)}
 .profil-balise-fill.alerte{background:var(--corail)}
 .profil-balise-n{font-size:11px;color:var(--texte-3);width:20px;text-align:right;flex-shrink:0}
-
-/* ---------- Planificateur ---------- */
-
-/* Bouton planifier sur la carte */
-.btn-planifier{
-  position:absolute;top:150px;right:18px;z-index:1000;
-  display:none;align-items:center;gap:8px;
-  background:var(--vert);border:none;color:#08120b;
-  border-radius:10px;padding:9px 14px;font-size:13px;
-  font-family:inherit;font-weight:600;cursor:pointer;
-  transition:filter .15s;box-shadow:0 4px 16px rgba(0,0,0,.4)
-}
-.btn-planifier:hover{filter:brightness(1.1)}
-.btn-planifier svg{width:16px;height:16px}
-
-/* Panneau planificateur (colonne droite) */
-.plan-panneau{
-  background:var(--noir-2);border-left:1px solid var(--bord);
-  display:none;flex-direction:column;overflow:hidden;
-  width:360px;
-}
-.plan-panneau.ouvert{display:flex}
-.app.plan-ouvert{grid-template-columns:310px 1fr 360px}
-.app.plan-ouvert.detail-ouvert{grid-template-columns:310px 1fr 360px}
-.app.plan-ouvert .detail{display:none!important}
-
-/* En-tête */
-.plan-entete{
-  padding:18px 20px 14px;border-bottom:1px solid var(--bord);
-  display:flex;align-items:center;justify-content:space-between;flex-shrink:0;
-}
-.plan-entete-titre{display:flex;align-items:center;gap:9px}
-.plan-entete-titre svg{color:var(--vert)}
-.plan-entete-titre h2{font-size:16px;font-weight:700;letter-spacing:-.02em}
-.plan-entete-fermer{background:var(--noir-3);border:1px solid var(--bord);color:var(--texte-3);width:30px;height:30px;border-radius:8px;font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .15s}
-.plan-entete-fermer:hover{color:var(--texte);border-color:var(--texte-3)}
-
-/* Formulaire */
-.plan-form{padding:16px 20px;border-bottom:1px solid var(--bord);flex-shrink:0}
-.plan-form-grille{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px}
-.plan-field{display:flex;flex-direction:column;gap:5px}
-.plan-field label{font-size:10px;color:var(--texte-3);text-transform:uppercase;letter-spacing:.06em;font-weight:700}
-.plan-field input,.plan-field select{
-  background:var(--noir-3);border:1px solid var(--bord);color:var(--texte);
-  font-family:inherit;font-size:13px;padding:9px 11px;border-radius:9px;width:100%;
-  transition:border-color .15s;
-}
-.plan-field input[type=date]{color-scheme:dark}
-.plan-field input:focus,.plan-field select:focus{outline:none;border-color:var(--vert)}
-.plan-calculer{
-  width:100%;background:var(--vert);color:#08120b;border:none;
-  border-radius:9px;padding:11px;font-size:14px;font-weight:700;
-  font-family:inherit;cursor:pointer;transition:filter .15s;
-  display:flex;align-items:center;justify-content:center;gap:8px;
-}
-.plan-calculer:hover{filter:brightness(1.1)}
-.plan-calculer:disabled{opacity:.6;cursor:not-allowed}
-.plan-calculer svg{width:15px;height:15px}
-
-/* Résumé */
-.plan-resume{
-  padding:12px 20px;border-bottom:1px solid var(--bord);
-  display:flex;gap:0;flex-shrink:0;
-}
-.plan-resume-stat{flex:1;text-align:center}
-.plan-resume-num{font-size:20px;font-weight:700;letter-spacing:-.02em;line-height:1;color:var(--corail)}
-.plan-resume-lbl{font-size:10px;color:var(--texte-3);text-transform:uppercase;letter-spacing:.05em;margin-top:4px}
-
-/* Liste des jours */
-.plan-jours{flex:1;overflow-y:auto;padding:8px}
-.plan-jours::-webkit-scrollbar{width:8px}
-.plan-jours::-webkit-scrollbar-thumb{background:var(--bord);border-radius:4px}
-
-.plan-jour{
-  background:var(--noir-3);border:1px solid var(--bord);border-radius:12px;
-  margin-bottom:8px;cursor:pointer;transition:all .16s;overflow:hidden;
-  border-left:4px solid transparent;
-}
-.plan-jour:hover{background:#1c2029;border-color:var(--bord)}
-.plan-jour-haut{
-  padding:12px 14px 8px;display:flex;
-  justify-content:space-between;align-items:center;
-}
-.plan-jour-label{font-size:11px;font-weight:800;color:var(--texte-3);text-transform:uppercase;letter-spacing:.05em}
-.plan-jour-date{font-size:11px;color:var(--texte-3)}
-.plan-jour-stats{
-  padding:0 14px 10px;display:flex;gap:14px;
-}
-.plan-jour-stat{font-size:12px;color:var(--texte-2);display:flex;align-items:center;gap:5px}
-.plan-jour-stat svg{width:12px;height:12px;opacity:.55;flex-shrink:0}
-.plan-jour-nuit{
-  margin:0 10px 10px;padding:10px 12px;border-radius:9px;
-  background:var(--noir);border:1px solid var(--bord);
-  display:flex;align-items:center;gap:10px;
-}
-.plan-nuit-ico{font-size:22px;flex-shrink:0;line-height:1}
-.plan-nuit-info{flex:1;min-width:0}
-.plan-nuit-nom{font-size:13px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;line-height:1.3}
-.plan-nuit-sous{font-size:11px;color:var(--texte-3);margin-top:2px}
-.plan-nuit-dist{font-size:11px;font-weight:700;white-space:nowrap;flex-shrink:0}
-
-/* Couleurs par type de nuit */
-.nuit-refuge .plan-nuit-nom{color:var(--corail)}
-.nuit-refuge .plan-nuit-dist{color:var(--corail)}
-.nuit-cabane .plan-nuit-nom{color:var(--ambre)}
-.nuit-cabane .plan-nuit-dist{color:var(--ambre)}
-.nuit-bivouac .plan-nuit-nom{color:var(--vert)}
-.nuit-bivouac .plan-nuit-dist{color:var(--vert)}
-.nuit-bivouac{border-color:rgba(57,217,138,.25)!important;background:rgba(57,217,138,.05)!important}
-
-/* Marqueur bivouac */
-.marqueur-bivouac{width:14px;height:14px;background:var(--vert);border:2.5px solid var(--noir);border-radius:3px;box-shadow:0 0 0 1px rgba(255,255,255,.15)}
-
-/* Vide / chargement */
-.plan-vide{padding:40px 20px;text-align:center;color:var(--texte-3);font-size:13px;line-height:1.6}
-.plan-vide svg{width:36px;height:36px;margin:0 auto 14px;display:block;opacity:.3}
-
-/* Toggle mode nuit */
-.plan-toggle-group{display:grid;grid-template-columns:1fr 1fr;gap:6px}
-.plan-toggle{
-  background:var(--noir-3);border:1px solid var(--bord);color:var(--texte-2);
-  border-radius:9px;padding:9px 8px;font-size:12px;font-family:inherit;
-  font-weight:600;cursor:pointer;transition:all .15s;text-align:center;line-height:1.3;
-}
-.plan-toggle:hover{border-color:var(--texte-3);color:var(--texte)}
-.plan-toggle.actif{background:rgba(200,151,122,.12);border-color:var(--corail);color:var(--corail)}
 
 /* ---------- Popup clic carte eau ---------- */
 .marqueur-clic{width:22px;height:22px;display:flex;align-items:center;justify-content:center;background:var(--noir-2);border:2px solid var(--cyan);border-radius:50%;box-shadow:0 0 0 4px rgba(94,186,125,.2)}
@@ -608,8 +400,7 @@
   mix-blend-mode:screen;
   opacity:0.5;
 }
-/* Renforce le contraste global uniquement en mode sombre (pas en mode topo) */
-body:not(.mode-topo) .leaflet-tile-pane{filter:contrast(1.1) saturate(1.1)}
+/* (filtre de contraste global retiré — plus nécessaire avec les vraies tuiles sombres) */
 
 /* ---------- Bouton bascule thème ---------- */
 .logo{position:relative}
@@ -625,17 +416,6 @@ body:not(.mode-topo) .leaflet-tile-pane{filter:contrast(1.1) saturate(1.1)}
 body.theme-clair .btn-theme .ico-lune{display:none}
 body.theme-clair .btn-theme .ico-soleil{display:block}
 
-/* ═══════════ AFFICHAGE EAU — REFONTE ═══════════ */
-
-/* --- Marqueur pastille ronde minimaliste --- */
-.pastille-eau{
-  width:22px;height:22px;border-radius:50%;
-  background:var(--c);border:2px solid #fff;
-  display:flex;align-items:center;justify-content:center;
-  box-shadow:0 1px 4px rgba(0,0,0,.35);
-}
-.pastille-eau svg{width:12px;height:12px;display:block}
-
 /* --- Popup eau sur la carte --- */
 .popup-eau-carte .leaflet-popup-content-wrapper{
   background:var(--noir-2);color:var(--texte);border-radius:12px;
@@ -644,47 +424,9 @@ body.theme-clair .btn-theme .ico-soleil{display:block}
 .popup-eau-carte .leaflet-popup-content{margin:0;padding:0}
 .popup-eau-carte .leaflet-popup-tip{background:var(--noir-2);border:1px solid var(--bord)}
 .popup-eau-carte .leaflet-popup-close-button{color:var(--texte-3);top:8px;right:8px}
-.pop-eau{padding:13px 15px;border-left:4px solid var(--c);border-radius:12px}
-.pop-eau-titre{font-size:14.5px;font-weight:700;line-height:1.25;margin-bottom:3px}
-.pop-eau-sous{font-size:12px;color:var(--texte-2);line-height:1.4;margin-bottom:7px}
-.pop-eau-km{display:inline-block;font-size:11.5px;font-weight:700;color:var(--c);background:color-mix(in srgb,var(--c) 14%,transparent);padding:3px 9px;border-radius:6px;font-variant-numeric:tabular-nums}
-
-/* --- Liste eau dans le panneau --- */
-.eau-groupe{
-  background:color-mix(in srgb,var(--vert) 7%,transparent);
-  border:1px solid color-mix(in srgb,var(--vert) 20%,transparent);
-  border-radius:12px;padding:4px;margin-bottom:8px;
-}
-.eau-ligne{
-  display:flex;align-items:center;gap:12px;
-  padding:10px 11px;border-radius:10px;cursor:pointer;
-  transition:background .13s;
-}
-.eau-ligne:hover{background:var(--noir-3)}
-.eau-groupe .eau-ligne:hover{background:color-mix(in srgb,var(--vert) 12%,transparent)}
-.eau-ico{
-  width:36px;height:36px;flex-shrink:0;
-  display:flex;align-items:center;justify-content:center;
-  background:color-mix(in srgb,var(--cyan) 12%,transparent);
-  border-radius:10px;color:var(--cyan);
-}
-.eau-ico svg{width:19px;height:19px}
 .eau-ligne.potable .eau-ico{background:color-mix(in srgb,var(--vert) 15%,transparent);color:var(--vert)}
 .eau-ligne.zone .eau-ico{background:color-mix(in srgb,#0ea5e9 15%,transparent);color:#0ea5e9}
-.eau-txt{flex:1;min-width:0}
-.eau-nom{font-size:14px;font-weight:600;line-height:1.3;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .eau-ligne.potable .eau-nom{color:var(--vert)}
-.eau-detail{font-size:11.5px;color:var(--texte-3);margin-top:2px;display:flex;align-items:center;gap:5px}
-.eau-badge-longe{
-  display:inline-block;font-size:9.5px;font-weight:700;text-transform:uppercase;
-  letter-spacing:.04em;color:#0ea5e9;background:color-mix(in srgb,#0ea5e9 15%,transparent);
-  padding:2px 6px;border-radius:5px;
-}
-.eau-km{
-  font-size:12px;font-weight:700;color:var(--cyan);white-space:nowrap;flex-shrink:0;
-  font-variant-numeric:tabular-nums;
-  background:color-mix(in srgb,var(--cyan) 10%,transparent);padding:5px 9px;border-radius:7px;
-}
 .eau-ligne.potable .eau-km{color:var(--vert);background:color-mix(in srgb,var(--vert) 12%,transparent)}
 .eau-ligne.zone .eau-km{color:#0ea5e9;background:color-mix(in srgb,#0ea5e9 12%,transparent)}
 
@@ -694,12 +436,19 @@ body.theme-clair .btn-theme .ico-soleil{display:block}
    ════════════════════════════════════════════════════════════════ */
 
 html,body{height:100%;overflow:hidden;background:var(--fond)}
+
+/* Scrollbar thémée partout, au cas où un navigateur affiche la scrollbar
+   native par défaut sur un conteneur non couvert par une règle spécifique */
+*{scrollbar-width:thin;scrollbar-color:var(--ligne) transparent}
+*::-webkit-scrollbar{width:8px;height:8px}
+*::-webkit-scrollbar-track{background:transparent}
+*::-webkit-scrollbar-thumb{background:var(--ligne);border-radius:8px}
+*::-webkit-scrollbar-thumb:hover{background:var(--txt3)}
 body{font-family:'Outfit','Inter',-apple-system,'Segoe UI',sans-serif}
 body::before{content:none}
 
 /* ── Coquille : la carte occupe tout ── */
 .app{display:block;position:fixed;inset:0;grid-template-columns:none!important}
-.zone-carte{position:static}
 #map{position:absolute;inset:0;z-index:0;background:var(--fond)}
 
 /* ── Marque flottante (haut gauche) ── */
@@ -738,19 +487,20 @@ body.theme-clair .btn-theme .ico-soleil{display:block}
 .app.panneau-ferme .panneau{transform:translateX(-115%);opacity:0;pointer-events:none}
 .panneau::after{content:none}
 
-/* poignée repli */
+/* poignée repli — onglet collé au bord du panneau, plus rattaché visuellement */
 .poignee{
-  position:absolute;top:88px;left:362px;z-index:1150;
-  width:30px;height:44px;border-radius:10px;
-  background:var(--panneau);border:1px solid var(--ligne);
+  position:absolute;top:50%;left:346px;z-index:1150;
+  width:22px;height:56px;border-radius:0 12px 12px 0;
+  background:var(--panneau);border:1px solid var(--ligne);border-left:none;
   color:var(--txt2);cursor:pointer;box-shadow:var(--ombre-leg);
   display:flex;align-items:center;justify-content:center;
+  transform:translateY(-50%);
   transition:left .35s cubic-bezier(.22,1,.36,1),color .2s;
   backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);
 }
 .poignee:hover{color:var(--accent)}
-.poignee svg{width:15px;height:15px;transition:transform .35s}
-.app.panneau-ferme .poignee{left:16px}
+.poignee svg{width:14px;height:14px;transition:transform .35s}
+.app.panneau-ferme .poignee{left:0}
 .app.panneau-ferme .poignee svg{transform:rotate(180deg)}
 
 /* recherche en tête de panneau */
@@ -773,25 +523,24 @@ body.theme-clair .btn-theme .ico-soleil{display:block}
 .stat-num.o,.stat-num.a{color:var(--txt)}
 .stat-lbl{font-size:9.5px;color:var(--txt3);text-transform:uppercase;letter-spacing:.07em}
 
-/* badges départements */
-.departements{
+/* badges zones (France & Andorre / Espagne) */
+.zones{
   display:flex;flex-wrap:wrap;gap:6px;margin:10px 14px 0;padding-bottom:2px;
-  max-height:84px;overflow-y:auto;
 }
-.dept-badge{
+.zone-badge{
   background:var(--noir-3);border:1px solid var(--ligne);color:var(--txt2);
-  border-radius:999px;padding:6px 11px;font-size:11.5px;font-weight:600;font-family:inherit;
+  border-radius:999px;padding:7px 13px;font-size:12px;font-weight:600;font-family:inherit;
   cursor:pointer;white-space:nowrap;transition:background .15s,border-color .15s,color .15s;
-  display:flex;align-items:center;gap:5px;
+  display:flex;align-items:center;gap:6px;flex:1;justify-content:center;
 }
-.dept-badge:hover{border-color:color-mix(in srgb,var(--accent) 40%,transparent);color:var(--txt)}
-.dept-badge.actif{
+.zone-badge:hover{border-color:color-mix(in srgb,var(--accent) 40%,transparent);color:var(--txt)}
+.zone-badge.actif{
   background:color-mix(in srgb,var(--accent) 16%,transparent);
   border-color:color-mix(in srgb,var(--accent) 55%,transparent);
   color:var(--accent);
 }
-.dept-n{font-size:10px;color:var(--txt3);font-variant-numeric:tabular-nums}
-.dept-badge.actif .dept-n{color:color-mix(in srgb,var(--accent) 75%,transparent)}
+.zone-n{font-size:10px;color:var(--txt3);font-variant-numeric:tabular-nums}
+.zone-badge.actif .zone-n{color:color-mix(in srgb,var(--accent) 75%,transparent)}
 
 /* liste */
 .liste{flex:1;overflow-y:auto;padding:10px 10px 6px}
@@ -806,79 +555,27 @@ body.theme-clair .btn-theme .ico-soleil{display:block}
 .cr-alt{font-size:12px;color:var(--txt3);font-variant-numeric:tabular-nums}
 .cr-region{font-size:11px;color:var(--txt3)}
 
-/* bouton profil en pied de panneau */
-.profil-btn{
-  margin:8px 14px 12px;background:var(--noir-3);border:1px solid var(--ligne);
-  color:var(--txt2);border-radius:12px;padding:10px;font-size:13px;font-weight:600;
-  font-family:inherit;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;
-  transition:color .2s,border-color .2s;
-}
-.profil-btn:hover{color:var(--accent);border-color:color-mix(in srgb,var(--accent) 40%,transparent);transform:none;box-shadow:none}
-.profil-panneau-old-2{display:none}
-
 /* ── Actions carte (colonne droite) ── */
+
 .actions{
   position:absolute;top:16px;right:16px;z-index:1100;
-  display:flex;flex-direction:column;gap:8px;align-items:flex-end;
+  display:flex;flex-direction:row;gap:8px;align-items:center;
 }
-.basculer-fond,.autour-moi,.import-gpx,.btn-planifier{
-  position:static!important;display:flex;align-items:center;gap:8px;
-  background:var(--panneau)!important;border:1px solid var(--ligne)!important;
-  color:var(--txt);border-radius:999px;padding:10px 15px;
-  font-size:12.5px;font-weight:600;font-family:inherit;cursor:pointer;
-  box-shadow:var(--ombre-leg)!important;
-  backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
-  transition:color .2s,border-color .2s,transform .2s;
-}
-.basculer-fond:hover,.autour-moi:hover,.import-gpx:hover{
-  color:var(--accent);border-color:color-mix(in srgb,var(--accent) 45%,transparent)!important;
-  transform:none;box-shadow:var(--ombre-leg)!important;
-}
-.basculer-fond svg,.autour-moi svg,.import-gpx svg{width:15px;height:15px}
-.btn-planifier{
-  background:var(--accent)!important;color:var(--sur-accent)!important;
-  border-color:transparent!important;font-weight:700;
-}
-.btn-planifier:hover{background:var(--accent-h)!important;transform:none}
-.btn-planifier svg{width:15px;height:15px}
-.import-gpx.charge svg{animation:tourne 1s linear infinite}
 @keyframes tourne{to{transform:rotate(360deg)}}
-
-/* ── Panneau GPX flottant (bas gauche) ── */
-.gpx-panneau{
-  position:absolute;left:16px;bottom:16px;top:auto;z-index:1150;
-  width:330px;max-height:52vh;display:none;flex-direction:column;overflow:hidden;
-  background:var(--panneau);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);
-  border:1px solid var(--ligne);border-radius:var(--rayon);box-shadow:var(--ombre);
-}
-.gpx-panneau.ouvert{display:flex;animation:monte .35s cubic-bezier(.22,1,.36,1) both}
 @keyframes monte{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
-/* quand le GPX est ouvert, la liste se replie visuellement au-dessus */
-.gpx-panneau.ouvert~.panneau, .app:has(.gpx-panneau.ouvert) .panneau{bottom:calc(52vh + 28px)}
-
-/* ── Drawers droite : détail & planificateur ── */
-.detail,.plan-panneau{
-  position:absolute;top:16px;right:16px;bottom:16px;z-index:1300;
-  width:390px;display:flex;flex-direction:column;overflow:hidden;
-  background:var(--panneau);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);
-  border:1px solid var(--ligne);border-left:1px solid var(--ligne);
-  border-radius:var(--rayon);box-shadow:var(--ombre);
-  transform:translateX(calc(100% + 24px));opacity:0;pointer-events:none;
-  transition:transform .38s cubic-bezier(.22,1,.36,1),opacity .3s;
+.detail{
+  position:absolute;top:16px;right:16px;bottom:16px;width:390px;z-index:1200;
+  background:var(--panneau);border:1px solid var(--ligne);border-radius:var(--rayon);
+  box-shadow:var(--ombre);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);
+  display:flex;flex-direction:column;overflow-y:auto;
+  transform:translateX(115%);opacity:0;pointer-events:none;
+  transition:transform .35s cubic-bezier(.22,1,.36,1),opacity .3s;
 }
 .app.detail-ouvert .detail{transform:translateX(0);opacity:1;pointer-events:auto;display:flex;animation:none}
-.plan-panneau{width:370px}
-.plan-panneau.ouvert{transform:translateX(0);opacity:1;pointer-events:auto;display:flex;animation:none}
-.app.plan-ouvert .detail{transform:translateX(calc(100% + 24px));opacity:0;pointer-events:none;display:flex}
-.detail{overflow-y:auto}
 .detail-contenu{overflow-y:auto}
-
-/* boutons calculer / toggles du plan à l'accent */
-.plan-calculer{background:var(--accent);color:var(--sur-accent)}
-.plan-calculer:hover{background:var(--accent-h);filter:none}
-.plan-field input:focus,.plan-field select:focus{border-color:var(--accent)}
-.plan-toggle.actif{background:color-mix(in srgb,var(--accent) 14%,transparent);border-color:var(--accent);color:var(--accent)}
-.plan-entete-titre svg{color:var(--accent)}
+.detail-vide{height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;color:var(--txt3);text-align:center;padding:40px;gap:16px}
+.detail-vide svg{width:42px;height:42px;opacity:.4}
+.detail-vide p{font-size:13px;line-height:1.6}
 
 /* ── Contrôles Leaflet harmonisés ── */
 .leaflet-control-zoom{border:none!important;box-shadow:var(--ombre-leg)!important;border-radius:12px!important;overflow:hidden}
@@ -910,10 +607,6 @@ body.mode-topo .cluster{background:var(--accent)!important;color:var(--sur-accen
 .modal{border-radius:var(--rayon);border:1px solid var(--ligne);box-shadow:var(--ombre)}
 .btn-save{background:var(--accent);color:var(--sur-accent)}
 .btn-save:hover{background:var(--accent-h)}
-
-/* ── Scrollbars ── */
-.liste::-webkit-scrollbar,.detail::-webkit-scrollbar,.plan-panneau::-webkit-scrollbar,.gpx-resultats::-webkit-scrollbar,.profil-panneau::-webkit-scrollbar{width:7px}
-.liste::-webkit-scrollbar-thumb,.detail::-webkit-scrollbar-thumb,.plan-panneau::-webkit-scrollbar-thumb,.gpx-resultats::-webkit-scrollbar-thumb,.profil-panneau::-webkit-scrollbar-thumb{background:var(--noir-3);border-radius:8px}
 .liste::-webkit-scrollbar-thumb:hover{background:var(--txt3)}
 
 /* ── Responsive mobile ──
@@ -934,10 +627,9 @@ body.mode-topo .cluster{background:var(--accent)!important;color:var(--sur-accen
     top:12px;left:auto;right:12px;bottom:auto;
     flex-direction:row;align-items:center;flex-wrap:nowrap;gap:6px;
   }
-  .basculer-fond,.import-gpx,.btn-planifier{padding:9px 11px}
-  .basculer-fond span,.import-gpx span{display:none} /* icône seule, pas de texte, pour tenir sur la largeur */
+  .basculer-fond{width:34px;height:34px}
   .btn-profil-rond{width:34px;height:34px}
-  .btn-api{padding:9px 11px;font-size:0} /* icône seule */
+  .btn-api{width:34px;height:34px}
   .btn-api svg{width:15px;height:15px}
 
   /* Panneau liste → feuille plein écran cachée par défaut, ouverte via le
@@ -965,25 +657,21 @@ body.mode-topo .cluster{background:var(--accent)!important;color:var(--sur-accen
   }
   .btn-liste-mobile svg{width:16px;height:16px;flex-shrink:0}
   .app.mobile-liste-ouverte .btn-liste-mobile{background:var(--accent);color:var(--sur-accent);border-color:transparent}
-  .app.detail-ouvert .btn-liste-mobile,.app.plan-ouvert .btn-liste-mobile{display:none}
+  .app.detail-ouvert .btn-liste-mobile{display:none}
 
-  /* Drawers détail / planificateur → plein écran sur mobile */
-  .detail,.plan-panneau{
+  .detail{
     left:0;right:0;top:0;bottom:0;width:100%;
     border-radius:0;border:none;
   }
 
-  /* Panneau GPX pleine largeur */
-  .gpx-panneau{left:0;right:0;width:100%;bottom:0;border-radius:20px 20px 0 0;border-left:none;border-right:none;border-bottom:none}
+  /* (règle .gpx-panneau retirée — fonctionnalité supprimée) */
 
   /* "Autour de moi" et le zoom Leaflet : en position basse par défaut,
      remontent au-dessus de la feuille liste quand elle est ouverte */
   .autour-moi{
     right:12px;bottom:16px!important;
-    padding:0;width:34px;height:34px;border-radius:10px;
-    justify-content:center;gap:0;
+    width:34px;height:34px;border-radius:50%;
   }
-  .autour-moi span{display:none}
   .leaflet-top.leaflet-left{right:12px;bottom:16px}
   .app.mobile-liste-ouverte .autour-moi{bottom:calc(78vh + 20px)!important}
   .app.mobile-liste-ouverte .leaflet-top.leaflet-left{bottom:calc(78vh + 20px)}
@@ -998,7 +686,6 @@ body.mode-topo .cluster{background:var(--accent)!important;color:var(--sur-accen
   .marque{padding:8px}
 }
 
-
 /* ── Reduced motion ── */
 @media(prefers-reduced-motion:reduce){
   *,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important}
@@ -1007,10 +694,7 @@ body.mode-topo .cluster{background:var(--accent)!important;color:var(--sur-accen
 /* zoom Leaflet déplacé en bas à droite (la marque occupe le haut gauche) */
 .leaflet-top.leaflet-left{top:auto;left:auto;right:10px;bottom:40px}
 
-/* fond sombre : Voyager inversé — la terre devient nuit, l'eau reste BLEUE */
-.fond-inverse{filter:invert(1) hue-rotate(180deg) saturate(1.45) brightness(.9) contrast(.95)}
-/* on retire le boost de contraste global qui interférait */
-body:not(.mode-topo) .leaflet-tile-pane{filter:none}
+/* fond sombre : tuiles CartoDB Dark Matter nativement sombres (voir carte.js) */
 
 /* ── Marqueurs sur fond topo : couleurs renforcées, bien visibles sur le beige ── */
 body.mode-topo .marqueur{border:2.5px solid #fff;box-shadow:0 1px 5px rgba(0,0,0,.5)}
@@ -1025,7 +709,7 @@ body.mode-topo .marqueur.visite{border-color:#fff;box-shadow:0 0 0 3px #2f9560,0
 /* ── Profil : icône ronde discrète en haut à droite ── */
 .btn-profil-rond{
   width:40px;height:40px;border-radius:50%;padding:0;
-  display:flex;align-items:center;justify-content:center;align-self:flex-end;
+  display:flex;align-items:center;justify-content:center;
   background:var(--panneau);border:1px solid var(--ligne);color:var(--txt2);
   cursor:pointer;box-shadow:var(--ombre-leg);
   backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
@@ -1034,11 +718,41 @@ body.mode-topo .marqueur.visite{border-color:#fff;box-shadow:0 0 0 3px #2f9560,0
 .btn-profil-rond:hover{color:var(--accent);border-color:color-mix(in srgb,var(--accent) 45%,transparent)}
 .btn-profil-rond svg{width:18px;height:18px}
 
-/* ── Autour de moi : en bas à droite, au-dessus du zoom ── */
+/* ── Changer de fond : même style rond, icône seule (le libellé reste pour
+   les lecteurs d'écran mais n'est plus affiché visuellement) ── */
+.basculer-fond{
+  position:static;top:auto;right:auto;z-index:auto;
+  width:40px;height:40px;border-radius:50%;padding:0;
+  display:flex;align-items:center;justify-content:center;
+  background:var(--panneau);border:1px solid var(--ligne);color:var(--txt2);
+  cursor:pointer;box-shadow:var(--ombre-leg);
+  backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
+  transition:color .2s,border-color .2s;
+}
+.basculer-fond:hover{color:var(--accent);border-color:color-mix(in srgb,var(--accent) 45%,transparent)}
+.basculer-fond svg{width:18px;height:18px}
+.basculer-fond span{
+  position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;
+  clip:rect(0,0,0,0);white-space:nowrap;border:0; /* visible seulement des lecteurs d'écran */
+}
+
+/* ── Autour de moi : même style rond, en bas à droite au-dessus du zoom ── */
 .autour-moi{
   position:absolute!important;top:auto!important;left:auto!important;
-  right:10px;bottom:122px;z-index:1100;
-  width:auto;height:auto;flex:none;
+  right:10px;bottom:134px;z-index:1100;
+  width:34px;height:34px;border-radius:50%;padding:0;
+  display:flex;align-items:center;justify-content:center;
+  background:var(--panneau);border:1px solid var(--ligne);color:var(--txt2);
+  cursor:pointer;box-shadow:var(--ombre-leg);
+  backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
+  transition:color .2s,border-color .2s;
+}
+.autour-moi:hover{color:var(--accent);border-color:color-mix(in srgb,var(--accent) 45%,transparent)}
+.autour-moi svg{width:16px;height:16px}
+.autour-moi.charge svg{animation:tourne 1s linear infinite}
+.autour-moi span{
+  position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;
+  clip:rect(0,0,0,0);white-space:nowrap;border:0;
 }
 /* position mobile de .autour-moi gérée dans le bloc "Responsive mobile" */
 
@@ -1227,12 +941,13 @@ body.mode-topo .marqueur.visite{border-color:#fff;box-shadow:0 0 0 3px #2f9560,0
 /* ── Bouton API (accès rapide à la doc /api) ── */
 .btn-liste-mobile{display:none}
 .btn-api{
-  display:flex;align-items:center;gap:8px;
+  width:40px;height:40px;border-radius:50%;padding:0;
+  display:flex;align-items:center;justify-content:center;
   background:var(--panneau)!important;border:1px solid var(--ligne)!important;
-  color:var(--txt2);border-radius:999px;padding:10px 15px;
-  font-size:12.5px;font-weight:600;font-family:inherit;cursor:pointer;text-decoration:none;
+  color:var(--txt2);cursor:pointer;text-decoration:none;
   box-shadow:var(--ombre-leg);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
   transition:color .2s,border-color .2s;
+  font-size:0;
 }
 .btn-api:hover{color:var(--accent);border-color:color-mix(in srgb,var(--accent) 45%,transparent)}
 .btn-api svg{width:15px;height:15px}

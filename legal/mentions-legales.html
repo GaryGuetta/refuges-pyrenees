@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mentions légales — Refuges des Pyrénées</title>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{--fond:#101114;--panneau:#17181c;--panneau-2:#1d1f24;--ligne:rgba(255,255,255,.09);
+    --txt:#f3f1ea;--txt2:#a9a59b;--txt3:#6f6c64;--accent:#f0a04b;--eau:#5aa9dc;--erreur:#e0685a}
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{font-family:'Outfit',system-ui,sans-serif;background:var(--fond);color:var(--txt);line-height:1.65}
+  .page{max-width:680px;margin:0 auto;padding:48px 24px 80px}
+  .retour{color:var(--txt3);text-decoration:none;font-size:13px}
+  .retour:hover{color:var(--accent)}
+  h1{font-size:28px;font-weight:700;letter-spacing:-.02em;margin:18px 0 6px}
+  h1 span{color:var(--accent)}
+  .sous{color:var(--txt2);font-size:14px;margin-bottom:36px}
+  h2{font-size:17px;font-weight:600;margin:36px 0 10px}
+  p{color:var(--txt2);font-size:14px;margin-bottom:10px}
+  ul{color:var(--txt2);font-size:14px;margin:8px 0 8px 20px}
+  li{margin-bottom:4px}
+  a{color:var(--eau)}
+  strong{color:var(--txt)}
+  .champ{margin-bottom:14px}
+  .champ label{display:block;font-size:12.5px;color:var(--txt2);font-weight:600;margin-bottom:6px}
+  .champ input,.champ textarea{
+    width:100%;background:var(--panneau-2);border:1px solid var(--ligne);border-radius:10px;
+    padding:11px 13px;color:var(--txt);font-family:inherit;font-size:14px;
+  }
+  .champ textarea{resize:vertical;min-height:110px}
+  .champ input:focus,.champ textarea:focus{outline:none;border-color:var(--accent)}
+  .btn-envoyer{
+    background:var(--accent);color:#201304;border:none;border-radius:10px;
+    padding:12px 22px;font-family:inherit;font-size:14px;font-weight:700;cursor:pointer;
+  }
+  .btn-envoyer:disabled{opacity:.5;cursor:default}
+  .form-msg{font-size:13px;margin-top:12px;display:none}
+  .form-msg.ok{color:#8fc99a;display:block}
+  .form-msg.err{color:var(--erreur);display:block}
+  .bloc{background:var(--panneau);border:1px solid var(--ligne);border-radius:14px;padding:20px 22px;margin-top:14px}
+</style>
+</head>
+<body>
+<div class="page">
+  <a class="retour" href="../index.html">← Retour à la carte</a>
+  <h1>Mentions <span>légales</span></h1>
+  <p class="sous">Refuges des Pyrénées — dernière mise à jour : juillet 2026.</p>
+
+  <h2>Éditeur du site</h2>
+  <p>Ce site est édité à titre non professionnel par un particulier, sous le pseudonyme <strong>GGF</strong>.
+  Conformément à l'article 6-III de la LCEN, l'identité complète de l'éditeur est conservée par l'hébergeur
+  et peut être communiquée aux autorités judiciaires sur demande légale. Pour toute question, utilise le
+  formulaire de contact ci-dessous.</p>
+
+  <h2>Hébergement</h2>
+  <p>Le site est hébergé par <strong>Vercel Inc.</strong>, 340 S Lemon Ave #4133, Walnut, CA 91789, États-Unis
+  — <a href="https://vercel.com" target="_blank" rel="noopener">vercel.com</a>.</p>
+  <p>La base de données et les comptes utilisateurs sont hébergés par <strong>Supabase Inc.</strong> —
+  <a href="https://supabase.com" target="_blank" rel="noopener">supabase.com</a>.</p>
+
+  <h2>Origine des données</h2>
+  <p>Les informations sur les refuges proviennent de
+  <a href="https://www.pyrenees-refuges.com" target="_blank" rel="noopener">pyrenees-refuges.com</a>,
+  complétées et corrigées par les contributions des visiteurs du site. Ces données sont fournies à titre
+  indicatif : vérifie toujours l'état réel d'un lieu avant de partir en randonnée.</p>
+
+  <h2>Propriété intellectuelle</h2>
+  <p>La mise en forme, le code et le design de ce site sont la propriété de l'éditeur. Les données de
+  refuges restent la propriété de leurs sources respectives.</p>
+
+  <h2>Données personnelles</h2>
+  <p>Voir la <a href="confidentialite.html">politique de confidentialité</a> pour le détail des données
+  collectées et tes droits.</p>
+
+  <h2>Contact</h2>
+  <p>Pour toute question, signalement d'erreur ou demande liée à tes données personnelles, utilise ce
+  formulaire — il n'expose pas d'adresse email publique et arrive directement à l'éditeur du site.</p>
+
+  <div class="bloc">
+    <div class="champ">
+      <label for="c-nom">Nom (optionnel)</label>
+      <input type="text" id="c-nom" autocomplete="name">
+    </div>
+    <div class="champ">
+      <label for="c-email">Ton email (pour te répondre)</label>
+      <input type="email" id="c-email" autocomplete="email" required>
+    </div>
+    <div class="champ">
+      <label for="c-message">Message</label>
+      <textarea id="c-message" required></textarea>
+    </div>
+    <button class="btn-envoyer" id="c-btn" onclick="envoyerContact()">Envoyer</button>
+    <div class="form-msg" id="c-msg"></div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+<script>
+  // Mêmes identifiants que le reste du site (clé publique, protégée par RLS —
+  // voir outils/schema-supabase.sql, table "contacts" : écriture publique
+  // seule, aucune lecture possible depuis le site).
+  const SUPABASE_URL = 'https://xwkbfbgrpafzhijpzsxn.supabase.co';
+  const SUPABASE_ANON_KEY = 'sb_publishable_yWDKzMRRZVjyI_cajyutbw_BK5tTH2z';
+  const supa = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+  async function envoyerContact(){
+    const nom = document.getElementById('c-nom').value.trim();
+    const email = document.getElementById('c-email').value.trim();
+    const message = document.getElementById('c-message').value.trim();
+    const zoneMsg = document.getElementById('c-msg');
+    const btn = document.getElementById('c-btn');
+
+    if(!email || !message){
+      zoneMsg.className = 'form-msg err';
+      zoneMsg.textContent = 'Merci de renseigner ton email et ton message.';
+      return;
+    }
+
+    btn.disabled = true; btn.textContent = 'Envoi…';
+    const { error } = await supa.from('contacts').insert({ nom: nom||null, email, message });
+    btn.disabled = false; btn.textContent = 'Envoyer';
+
+    if(error){
+      zoneMsg.className = 'form-msg err';
+      zoneMsg.textContent = "Erreur lors de l'envoi : " + error.message;
+      return;
+    }
+    zoneMsg.className = 'form-msg ok';
+    zoneMsg.textContent = 'Message envoyé, merci !';
+    document.getElementById('c-nom').value = '';
+    document.getElementById('c-email').value = '';
+    document.getElementById('c-message').value = '';
+  }
+</script>
+</body>
+</html>
