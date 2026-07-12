@@ -42,46 +42,64 @@
 
   <h2>Points d'accès</h2>
   <div class="endpoint"><span class="verbe">GET</span><span class="chemin">/api/refuges.json</span><span class="desc">tous les lieux</span></div>
+  <div class="endpoint"><span class="verbe">GET</span><span class="chemin">/api/urls.json</span><span class="desc">table id → url (léger)</span></div>
   <div class="endpoint"><span class="verbe">GET</span><span class="chemin">/api/refuges.geojson</span><span class="desc">GeoJSON (SIG, Leaflet…)</span></div>
   <div class="endpoint"><span class="verbe">GET</span><span class="chemin">/api/refuges-occitanie.json</span><span class="desc">par région</span></div>
   <div class="endpoint"><span class="verbe">GET</span><span class="chemin">/api/refuges-andorre.json</span><span class="desc">par région</span></div>
-  <div class="endpoint"><span class="verbe">GET</span><span class="chemin">/api/refuges-nouvelle-aquitaine.json</span><span class="desc">par région</span></div>
+  <div class="endpoint"><span class="verbe">GET</span><span class="chemin">/api/refuges-aragon.json</span><span class="desc">par région</span></div>
+  <div class="endpoint"><span class="verbe">GET</span><span class="chemin">/api/refuges-catalonia.json</span><span class="desc">par région</span></div>
+  <div class="endpoint"><span class="verbe">GET</span><span class="chemin">/api/refuges-navarre.json</span><span class="desc">par région</span></div>
   <div class="endpoint"><span class="verbe">GET</span><span class="chemin">/api/refuges-cat-refuge.json</span><span class="desc">refuges gardés</span></div>
   <div class="endpoint"><span class="verbe">GET</span><span class="chemin">/api/refuges-cat-libre.json</span><span class="desc">cabanes ouvertes</span></div>
   <div class="endpoint"><span class="verbe">GET</span><span class="chemin">/api/refuges-cat-cabane.json</span><span class="desc">cabanes / abris</span></div>
   <div class="endpoint"><span class="verbe">GET</span><span class="chemin">/api/refuges-cat-ruine.json</span><span class="desc">ruines</span></div>
 
+  <div class="note"><b>Bouton "voir ce refuge" depuis un autre site.</b> Chaque lieu a un champ
+  <code>url</code> tout prêt : un lien direct qui ouvre la fiche de ce refuge sur la carte
+  interactive. Pas besoin de construire l'URL toi-même. Pour un lookup léger sans charger
+  toute la fiche, utilise <code>/api/urls.json</code> (juste <code>{ id: url }</code>).</div>
+
   <h2>Format d'un lieu</h2>
   <table>
     <tr><th>Champ</th><th>Type</th><th>Description</th></tr>
     <tr><td>id</td><td>string</td><td>Identifiant stable (nom + coordonnées)</td></tr>
+    <tr><td>url</td><td>string</td><td>Lien direct vers la fiche de ce refuge sur la carte</td></tr>
     <tr><td>nom</td><td>string</td><td>Nom du lieu</td></tr>
     <tr><td>lat, lon</td><td>number</td><td>Coordonnées WGS84</td></tr>
     <tr><td>altitude</td><td>number | null</td><td>Altitude en mètres</td></tr>
-    <tr><td>region</td><td>string</td><td>Andorre, Occitanie ou Nouvelle-Aquitaine</td></tr>
-    <tr><td>places</td><td>number | null</td><td>Couchages estimés</td></tr>
-    <tr><td>eau</td><td>string | null</td><td>Eau à proximité (déclaratif source)</td></tr>
-    <tr><td>bois</td><td>string | null</td><td>Bois à proximité (déclaratif source)</td></tr>
+    <tr><td>region</td><td>string</td><td>Andorre, Occitanie, Nouvelle-Aquitaine, Aragon, Catalonia ou Navarre</td></tr>
+    <tr><td>departement</td><td>string | null</td><td>Département ou zone administrative</td></tr>
+    <tr><td>ville</td><td>string | null</td><td>Ville/hameau le plus proche</td></tr>
+    <tr><td>places</td><td>object | null</td><td><code>{ ete, hiver }</code> — capacités estimées</td></tr>
+    <tr><td>eau</td><td>string | null</td><td>Eau à proximité</td></tr>
+    <tr><td>bois</td><td>string | null</td><td>Bois à proximité</td></tr>
+    <tr><td>cheminee</td><td>string | null</td><td>Présence d'une cheminée</td></tr>
+    <tr><td>couchage</td><td>string | null</td><td>Précisions sur le couchage</td></tr>
+    <tr><td>eau_mois</td><td>number[] | null</td><td>Mois où l'eau est disponible (0=janvier)</td></tr>
     <tr><td>type_num</td><td>number | null</td><td>Type source (1 à 7)</td></tr>
     <tr><td>type_libelle</td><td>string | null</td><td>Libellé du type source</td></tr>
     <tr><td>categorie</td><td>string</td><td><code>refuge</code>, <code>libre</code>, <code>cabane</code> ou <code>ruine</code></td></tr>
     <tr><td>description</td><td>string | null</td><td>Description texte (HTML retiré)</td></tr>
-    <tr><td>lien</td><td>string | null</td><td>URL externe éventuelle</td></tr>
+    <tr><td>rando</td><td>string | null</td><td>Randonnées / sommets à proximité</td></tr>
+    <tr><td>lien_source</td><td>string | null</td><td>URL externe éventuelle (source d'origine)</td></tr>
+    <tr><td>modifie_par_la_communaute</td><td>boolean</td><td>true si corrigé par un visiteur</td></tr>
   </table>
 
-  <h2>Exemple</h2>
-  <pre><code>const rep = await fetch('https://TON-SITE/api/refuges.json');
-const { meta, refuges } = await rep.json();
+  <h2>Exemple — bouton de redirection depuis un autre site</h2>
+  <pre><code>const rep = await fetch('https://TON-SITE/api/urls.json');
+const urls = await rep.json();
 
-console.log(meta.nombre, 'lieux —', meta.genere_le);
-const gardes = refuges.filter(r =&gt; r.categorie === 'refuge');</code></pre>
+// urls['cabane-de-xyz-42-1234-1-5678'] === 'https://TON-SITE/index.html?refuge=cabane-de-xyz-...'
+bouton.href = urls[idDuRefuge];</code></pre>
 
   <pre><code># En ligne de commande
-curl -s https://TON-SITE/api/refuges-cat-refuge.json | jq '.refuges[0]'</code></pre>
+curl -s https://TON-SITE/api/refuges-cat-refuge.json | jq '.refuges[0].url'</code></pre>
 
   <h2>Fraîcheur des données</h2>
-  <p>Les fichiers sont régénérés à chaque déploiement du site (champ <code>meta.genere_le</code>).
-  Pour les mettre à jour : <code>node outils/generer-api.mjs</code>.</p>
+  <p>Cette API est générée depuis la base Supabase du site (donnée d'origine + corrections
+  communautaires + enrichissement). Champ <code>meta.genere_le</code> pour la date de génération.
+  Pour la régénérer :</p>
+  <pre><code>SUPABASE_URL=... SUPABASE_SERVICE_ROLE=... node outils/generer-api-publique.mjs</code></pre>
 
   <div class="note"><b>Attribution requise.</b> Les données proviennent de
   <a href="https://www.pyrenees-refuges.com" target="_blank" rel="noopener">pyrenees-refuges.com</a>.

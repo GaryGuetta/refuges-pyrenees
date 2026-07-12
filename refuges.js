@@ -141,5 +141,13 @@ async function charger(){
     return;
   }
   initialiser();
+
+  // Arrivée depuis une page refuge/xxx.html partagée (?refuge=id) : ouvre
+  // directement la fiche du bon lieu, plutôt que la vue générale.
+  const idDepuisURL = new URLSearchParams(location.search).get('refuge');
+  if(idDepuisURL){
+    const i = REFUGES.findIndex(r=>r.id===idDepuisURL);
+    if(i!==-1) setTimeout(()=>selectionner(i,true), 300);
+  }
 }
 

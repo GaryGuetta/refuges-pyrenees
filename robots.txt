@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://refuges-pyrenees.vercel.app/sitemap.xml

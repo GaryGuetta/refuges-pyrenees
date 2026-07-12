@@ -1,9 +1,11 @@
 // =============================================================================
-// generer-api.mjs — Génère l'API statique dans /api à partir des données
-// live de pyrenees-refuges.com (mêmes règles de normalisation que le site).
+// generer-api.mjs — Récupère les données FRAÎCHES depuis pyrenees-refuges.com
+// (le site source d'origine). Sert UNIQUEMENT à ALIMENTER/rafraîchir la table
+// Supabase via outils/importer-supabase.mjs — ce n'est PAS l'API publique du
+// site (pour ça, voir outils/generer-api-publique.mjs, qui lit Supabase et
+// inclut les corrections communautaires + l'enrichissement CSV + le champ url).
 //
 // Usage :  node outils/generer-api.mjs
-// À relancer avant chaque déploiement pour rafraîchir les données.
 // =============================================================================
 
 import { mkdir, writeFile } from 'node:fs/promises';
@@ -11,7 +13,7 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const RACINE = path.join(path.dirname(fileURLToPath(import.meta.url)), '..');
-const DOSSIER_API = path.join(RACINE, 'api');
+const DOSSIER_SORTIE = path.join(RACINE, 'donnees-carte');
 
 const REGIONS = ['Andorre', 'Occitanie', 'Nouvelle-Aquitaine', 'Aragon', 'Catalonia', 'Navarre'];
 
@@ -74,20 +76,9 @@ async function chargerRegion(region){
   }).filter(Boolean).filter(r => r.lat && r.lon);
 }
 
-function versGeoJSON(refuges){
-  return {
-    type: 'FeatureCollection',
-    features: refuges.map(r => ({
-      type: 'Feature',
-      geometry: { type: 'Point', coordinates: [r.lon, r.lat, r.altitude ?? undefined].filter(v => v !== undefined) },
-      properties: Object.fromEntries(Object.entries(r).filter(([k]) => !['lat','lon'].includes(k)))
-    }))
-  };
-}
-
 async function main(){
-  console.log('Génération de l’API statique…');
-  await mkdir(DOSSIER_API, { recursive: true });
+  console.log('Récupération des données fraîches depuis pyrenees-refuges.com…');
+  await mkdir(DOSSIER_SORTIE, { recursive: true });
 
   const parRegion = {};
   for (const region of REGIONS){
@@ -103,28 +94,15 @@ async function main(){
     genere_le: new Date().toISOString(),
     nombre: tous.length,
     regions: REGIONS,
-    categories: { refuge:'Refuge gardé', libre:'Cabane ouverte', cabane:'Cabane / abri', ruine:'Ruine' }
   };
 
-  // Endpoint principal
-  await writeFile(path.join(DOSSIER_API,'refuges.json'),
+  // Fichier de staging, lu par outils/importer-supabase.mjs — pas l'API
+  // publique du site (voir outils/generer-api-publique.mjs pour ça).
+  await writeFile(path.join(DOSSIER_SORTIE,'refuges-source.json'),
     JSON.stringify({ meta, refuges: tous }, null, 1));
-  // GeoJSON
-  await writeFile(path.join(DOSSIER_API,'refuges.geojson'),
-    JSON.stringify(versGeoJSON(tous)));
-  // Par région
-  for (const region of REGIONS){
-    await writeFile(path.join(DOSSIER_API, `refuges-${slug(region)}.json`),
-      JSON.stringify({ meta: { ...meta, nombre: parRegion[region].length, regions:[region] }, refuges: parRegion[region] }, null, 1));
-  }
-  // Par catégorie
-  for (const cat of ['refuge','libre','cabane','ruine']){
-    const sel = tous.filter(r => r.categorie === cat);
-    await writeFile(path.join(DOSSIER_API, `refuges-cat-${cat}.json`),
-      JSON.stringify({ meta: { ...meta, nombre: sel.length }, refuges: sel }, null, 1));
-  }
 
-  console.log(`\n✓ API générée dans /api — ${tous.length} lieux, ${3 + REGIONS.length + 4} fichiers.`);
+  console.log(`\n✓ Snapshot source écrit dans donnees-carte/refuges-source.json — ${tous.length} lieux.`);
+  console.log('  Prochaine étape : node outils/importer-supabase.mjs');
 }
 
 main().catch(e => { console.error('\n✗ Échec :', e.message); process.exit(1); });

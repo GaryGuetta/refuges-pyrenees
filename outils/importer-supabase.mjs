@@ -1,6 +1,7 @@
 // =============================================================================
-// importer-supabase.mjs — Importe api/refuges.json (généré par generer-api.mjs)
-// dans la table Supabase `refuges`. Écrase les lignes existantes (par id),
+// importer-supabase.mjs — Importe donnees-carte/refuges-source.json (généré
+// par generer-api.mjs) dans la table Supabase `refuges`. Écrase les lignes
+// existantes (par id),
 // SAUF si elles ont été modifiées manuellement (modifie=true) : dans ce cas
 // on ne touche qu'à la colonne `origine`, pour ne jamais perdre une édition.
 //
@@ -9,8 +10,10 @@
 //   SUPABASE_SERVICE_ROLE  (service_role key — SECRÈTE, jamais dans le site)
 //
 // Usage :
-//   1) node outils/generer-api.mjs        (rafraîchit api/refuges.json)
+//   1) node outils/generer-api.mjs        (rafraîchit donnees-carte/refuges-source.json)
 //   2) SUPABASE_URL=... SUPABASE_SERVICE_ROLE=... node outils/importer-supabase.mjs
+//   3) SUPABASE_URL=... SUPABASE_SERVICE_ROLE=... node outils/generer-api-publique.mjs
+//      (régénère l'API publique dans /api à partir de Supabase à jour)
 // =============================================================================
 
 import { readFile } from 'node:fs/promises';
@@ -52,7 +55,7 @@ async function chargerExistants(){
 }
 
 async function main(){
-  const brut = await readFile(path.join(RACINE, 'api', 'refuges.json'), 'utf8');
+  const brut = await readFile(path.join(RACINE, 'donnees-carte', 'refuges-source.json'), 'utf8');
   const { refuges } = JSON.parse(brut);
 
   console.log(`Import de ${refuges.length} lieux…`);
