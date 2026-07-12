@@ -68,6 +68,16 @@
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
       API
     </a>
+    <button class="btn-ajouter-refuge" onclick="toggleModeAjout()" title="Ajouter un refuge" aria-label="Ajouter un refuge">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+    </button>
+  </div>
+
+  <!-- Bandeau affiché pendant le placement d'un nouveau refuge -->
+  <div class="bandeau-ajout" id="bandeau-ajout">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0Z"/><circle cx="12" cy="10" r="3"/></svg>
+    <span>Clique sur la carte à l'endroit du nouveau refuge</span>
+    <button onclick="toggleModeAjout()">Annuler</button>
   </div>
   <button class="autour-moi" onclick="autourDeMoi()" title="Refuges autour de moi" aria-label="Refuges autour de moi">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3"/></svg>
@@ -168,6 +178,60 @@
   </div>
 </div>
 
+<div class="overlay" id="overlay-ajout">
+  <div class="modal">
+    <div class="modal-tete">
+      <h2>Ajouter un refuge</h2>
+      <button class="modal-fermer" onclick="fermerFormulaireAjout()">&times;</button>
+    </div>
+    <div class="modal-corps">
+      <div class="champ">
+        <label>Nom</label>
+        <input type="text" id="a-nom" placeholder="Ex : Cabane de...">
+      </div>
+      <div class="champ-duo">
+        <div class="champ"><label>Altitude (m)</label><input type="number" id="a-alt"></div>
+        <div class="champ"><label>Type</label>
+          <select id="a-type">
+            <option value="refuge">Refuge gardé</option>
+            <option value="libre">Cabane ouverte</option>
+            <option value="cabane" selected>Cabane / abri</option>
+            <option value="ruine">Ruine</option>
+          </select>
+        </div>
+      </div>
+      <div class="champ-duo">
+        <div class="champ"><label>Eau à proximité</label>
+          <select id="a-eau"><option value="">—</option><option value="Oui">Oui</option><option value="Non">Non</option></select>
+        </div>
+        <div class="champ"><label>Bois</label>
+          <select id="a-bois"><option value="">—</option><option value="Oui">Oui</option><option value="Non">Non</option></select>
+        </div>
+      </div>
+      <div class="champ-duo">
+        <div class="champ"><label>Ville / hameau le plus proche</label><input type="text" id="a-ville"></div>
+        <div class="champ"><label>Cheminée</label>
+          <select id="a-cheminee"><option value="">—</option><option value="Oui">Oui</option><option value="Non">Non</option></select>
+        </div>
+      </div>
+      <div class="champ-duo">
+        <div class="champ"><label>Latitude</label><input type="number" step="0.00001" id="a-lat"></div>
+        <div class="champ"><label>Longitude</label><input type="number" step="0.00001" id="a-lon"></div>
+      </div>
+      <div class="champ">
+        <label>Description</label>
+        <textarea id="a-desc" placeholder="État du lieu, accès, particularités…"></textarea>
+      </div>
+    </div>
+    <div class="modal-pied">
+      <div></div>
+      <div style="display:flex;gap:10px">
+        <button class="btn btn-annuler" onclick="fermerFormulaireAjout()">Annuler</button>
+        <button class="btn btn-save" onclick="enregistrerNouveauRefuge()">Ajouter ce refuge</button>
+      </div>
+    </div>
+  </div>
+</div>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet.markercluster/1.5.3/leaflet.markercluster.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
@@ -178,6 +242,7 @@
   <script src="eau.js"></script>
   <script src="passages.js"></script>
   <script src="edition.js"></script>
+  <script src="ajout-refuge.js"></script>
   <script src="detail.js"></script>
   <script src="photos.js"></script>
   <script src="fiche.js"></script>

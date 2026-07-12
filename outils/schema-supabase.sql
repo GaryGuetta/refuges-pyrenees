@@ -37,6 +37,11 @@ create policy "edition publique" on refuges
 -- Pas de policy insert/delete → seul le script d'import (avec la clé service_role,
 -- qui contourne RLS) peut créer ou supprimer des lignes. Le public ne peut qu'éditer.
 
+-- SAUF : un compte connecté peut proposer un NOUVEAU lieu (formulaire "Ajouter
+-- un refuge"). Toujours pas de suppression possible.
+create policy "creation par compte connecte" on refuges
+  for insert with check (auth.uid() is not null);
+
 
 -- =============================================================================
 -- Colonnes complémentaires (données croisées depuis un export CSV externe —

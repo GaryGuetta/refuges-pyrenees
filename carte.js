@@ -81,6 +81,10 @@ function rafraichirTousLesMarqueurs(){
 let marqueurClic=null;
 async function onClickCarte(e){
   const {lat,lng}=e.latlng;
+  if(typeof modeAjout!=='undefined' && modeAjout){
+    demarrerAjoutRefuge(lat,lng);
+    return;
+  }
   if(marqueurClic){map.removeLayer(marqueurClic);marqueurClic=null;}
   const el=document.createElement('div');
   el.className='marqueur-clic';
