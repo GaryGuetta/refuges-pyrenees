@@ -78,8 +78,10 @@ function retirerCoucheZone(){
 }
 
 // Cadre la carte sur la zone par défaut au chargement (sans contour)
-async function initZoneParDefaut(){
+async function initZoneParDefaut(zoneForcee){
+  if(zoneForcee && ZONES[zoneForcee]) zoneActive = zoneForcee;
   rendreZones();
+  majMarqueursVisibles();
   const contours = await chargerContoursZones();
   const feature = contours[zoneActive];
   if(feature){

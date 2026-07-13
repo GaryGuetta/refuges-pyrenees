@@ -1,11 +1,13 @@
 // =============================================================================
-// edition.js — Édition d'un refuge (écrit directement dans Supabase, visible
-// par tous les visiteurs — voir outils/schema-supabase.sql)
+// edition.js — Édition d'un refuge (réservée aux comptes connectés, écrit
+// directement dans Supabase, visible par tous les visiteurs — voir
+// outils/schema-supabase.sql)
 // =============================================================================
 
 let lieuEnEdition = null;
 
 function ouvrirEdition(i){
+  if(!estConnecte()){ alert("Connecte-toi d'abord pour modifier un lieu (bouton profil en haut à droite)."); return; }
   lieuEnEdition=i;
   const r=REFUGES[i];
   document.getElementById('e-nom').value=r.nom||'';

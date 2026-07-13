@@ -32,7 +32,7 @@ create policy "lecture publique" on refuges
 
 -- Tout le monde peut modifier un lieu existant (pas de compte requis)
 create policy "edition publique" on refuges
-  for update using (true) with check (true);
+  for update using (auth.uid() is not null) with check (auth.uid() is not null);
 
 -- Pas de policy insert/delete → seul le script d'import (avec la clé service_role,
 -- qui contourne RLS) peut créer ou supprimer des lignes. Le public ne peut qu'éditer.

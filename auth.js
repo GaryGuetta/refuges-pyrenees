@@ -12,12 +12,11 @@ async function initAuth(){
 
   supabaseClient.auth.onAuthStateChange((_event, session)=>{
     currentUser = session?.user || null;
-    const profil=document.getElementById('profil-panneau');
-    if(profil && profil.classList.contains('ouvert') && typeof rendreProfilComplet==='function') rendreProfilComplet();
+    if(document.getElementById('profil-contenu') && typeof rendreProfilComplet==='function') rendreProfilComplet();
     if(typeof rafraichirTousLesMarqueurs==='function') rafraichirTousLesMarqueurs();
     if(typeof appliquer==='function') appliquer();
     // si un détail de refuge est ouvert, on le redessine pour afficher/masquer le formulaire d'ajout
-    if(actif!==null && typeof afficherDetail==='function' && typeof REFUGES!=='undefined' && REFUGES[actif]) afficherDetail(REFUGES[actif]);
+    if(typeof actif!=='undefined' && actif!==null && typeof afficherDetail==='function' && typeof REFUGES!=='undefined' && REFUGES[actif]) afficherDetail(REFUGES[actif]);
   });
 }
 
@@ -49,7 +48,7 @@ async function handleConnexion(){
   const res=await connexion(email,mdp);
   if(res.erreur){ zoneErr.textContent=res.erreur; zoneErr.style.display='block'; return; }
   zoneErr.style.display='none';
-  rendreProfilComplet();
+  if(typeof rendreProfilComplet==='function') rendreProfilComplet();
 }
 
 async function handleInscription(){
@@ -62,12 +61,13 @@ async function handleInscription(){
   if(res.erreur){ zoneErr.textContent=res.erreur; zoneErr.style.display='block'; return; }
   zoneErr.style.display='none';
   if(res.attenteConfirmation){
-    document.getElementById('profil-corps-auth').innerHTML=`<div class="hist-vide">Compte créé ! Vérifie ta boîte mail pour confirmer ton adresse, puis reviens te connecter ici.</div>`;
+    const zone=document.getElementById('profil-contenu');
+    if(zone) zone.innerHTML=`<div class="profil-carte profil-vide">Compte créé ! Vérifie ta boîte mail pour confirmer ton adresse, puis reviens te connecter ici.</div>`;
     return;
   }
-  rendreProfilComplet();
+  if(typeof rendreProfilComplet==='function') rendreProfilComplet();
 }
 
 function handleDeconnexion(){
-  deconnexion().then(()=>rendreProfilComplet());
+  deconnexion().then(()=>{ if(typeof rendreProfilComplet==='function') rendreProfilComplet(); });
 }

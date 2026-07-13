@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>À propos — Refuges des Pyrénées</title>
+<meta name="description" content="Pourquoi ce site existe, d'où viennent les données, et comment il est tenu à jour.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --fond:#101114;--panneau:#17181c;--panneau-2:#1d1f24;
+    --ligne:rgba(255,255,255,.09);--txt:#f3f1ea;--txt2:#a9a59b;--txt3:#6f6c64;
+    --accent:#f0a04b;--eau:#5aa9dc;--vert:#6fbf8c;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{font-family:'Outfit',system-ui,sans-serif;background:var(--fond);color:var(--txt);line-height:1.65}
+  a{color:inherit}
+
+  .nav{position:sticky;top:0;z-index:20;display:flex;align-items:center;justify-content:space-between;
+    padding:16px 24px;background:rgba(16,17,20,.75);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
+    border-bottom:1px solid var(--ligne)}
+  .nav-logo{display:flex;align-items:center;gap:10px;text-decoration:none;color:var(--txt);font-weight:600;font-size:16px}
+  .nav-logo svg{width:26px;height:26px}
+  .nav-logo b{color:var(--accent)}
+  .nav-liens{display:flex;align-items:center;gap:22px;font-size:13.5px;color:var(--txt2)}
+  .nav-liens a{text-decoration:none;transition:color .15s}
+  .nav-liens a:hover{color:var(--txt)}
+  .btn-carte{
+    background:var(--accent);color:#201304;text-decoration:none;font-weight:700;font-size:13.5px;
+    padding:10px 18px;border-radius:999px;transition:transform .15s,box-shadow .15s;white-space:nowrap;
+  }
+  .btn-carte:hover{transform:translateY(-1px);box-shadow:0 6px 20px rgba(240,160,75,.3)}
+
+  .page{max-width:720px;margin:0 auto;padding:64px 24px 90px}
+  .eyebrow{color:var(--accent);font-size:12.5px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;margin-bottom:14px}
+  h1{font-size:clamp(28px,4.5vw,42px);font-weight:800;letter-spacing:-.03em;line-height:1.12;margin-bottom:24px}
+  h1 em{font-style:normal;color:var(--accent)}
+  .intro{font-size:17px;color:var(--txt2);line-height:1.7;margin-bottom:8px}
+
+  h2{font-size:19px;font-weight:800;letter-spacing:-.01em;margin:52px 0 14px}
+  p{font-size:15px;color:var(--txt2);margin-bottom:14px}
+  p strong{color:var(--txt);font-weight:600}
+
+  .carte-info{
+    background:var(--panneau);border:1px solid var(--ligne);border-radius:16px;
+    padding:22px 24px;margin:18px 0;
+  }
+  .carte-info ul{margin:0;padding-left:20px}
+  .carte-info li{color:var(--txt2);font-size:14.5px;margin-bottom:8px;line-height:1.6}
+  .carte-info li:last-child{margin-bottom:0}
+  .carte-info li strong{color:var(--txt)}
+
+  .cta-finale{
+    margin-top:56px;padding:32px;background:var(--panneau);border:1px solid var(--ligne);border-radius:18px;
+    text-align:center;
+  }
+  .cta-finale p{margin-bottom:18px}
+  .btn-primaire{
+    display:inline-flex;align-items:center;gap:9px;background:var(--accent);color:#201304;
+    text-decoration:none;font-weight:700;font-size:14.5px;padding:13px 24px;border-radius:12px;
+    transition:transform .15s,box-shadow .15s;
+  }
+  .btn-primaire:hover{transform:translateY(-2px);box-shadow:0 10px 30px rgba(240,160,75,.35)}
+
+  footer{border-top:1px solid var(--ligne);padding:40px 24px;margin-top:20px}
+  .footer-inner{max-width:1080px;margin:0 auto;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:16px}
+  .footer-logo{display:flex;align-items:center;gap:9px;font-size:14px;font-weight:600;color:var(--txt2)}
+  .footer-logo svg{width:20px;height:20px}
+  .footer-liens{display:flex;gap:22px;font-size:13px;color:var(--txt3)}
+  .footer-liens a{text-decoration:none;transition:color .15s}
+  .footer-liens a:hover{color:var(--txt)}
+
+  @media(max-width:640px){ .nav-liens{display:none} }
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <a class="nav-logo" href="index.html">
+    <svg viewBox="0 0 44 40" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M3 33 L15 12 L22 24 L28 14 L41 33"/>
+      <circle cx="34" cy="7" r="3.4" fill="var(--accent)" stroke="none"/>
+    </svg>
+    <span>Refuges des <b>Pyrénées</b></span>
+  </a>
+  <div class="nav-liens">
+    <a href="a-propos.html">À propos</a>
+    <a href="api/index.html">API</a>
+    <a href="legal/mentions-legales.html">Mentions légales</a>
+  </div>
+  <a class="btn-carte" href="carte.html">Voir la carte →</a>
+</nav>
+
+<div class="page">
+  <div class="eyebrow">À propos</div>
+  <h1>Un projet perso, parce que <em>l'info existait déjà</em> — juste éparpillée partout.</h1>
+  <p class="intro">Ce site est né d'un constat simple : avant une sortie dans les Pyrénées, il fallait
+  croiser trois ou quatre sources différentes pour savoir si une cabane avait de l'eau à proximité,
+  si elle était encore debout, ou combien de personnes elle pouvait accueillir. Refuges des Pyrénées
+  rassemble tout ça au même endroit.</p>
+
+  <h2>D'où viennent les données</h2>
+  <p>La base de départ vient de <a href="https://www.pyrenees-refuges.com" target="_blank" rel="noopener" style="color:var(--eau)">pyrenees-refuges.com</a>,
+  complétée avec des informations croisées (capacité été/hiver, cheminée, ville la plus proche) et
+  enrichie automatiquement pour chaque lieu : point d'eau le plus proche via OpenStreetMap, prévisions
+  météo à l'altitude exacte du refuge via Open-Meteo.</p>
+  <p>Le reste — l'état réel d'un lieu, si le bois est encore là, si le toit tient toujours — ça,
+  seuls les gens qui y passent peuvent le savoir. D'où la partie communautaire du site.</p>
+
+  <h2>Comment c'est tenu à jour</h2>
+  <div class="carte-info">
+    <ul>
+      <li><strong>Édition libre</strong> — n'importe qui peut corriger une fiche directement, sans créer de compte.</li>
+      <li><strong>Comptes &amp; passages</strong> — se connecter permet de marquer les lieux visités et de laisser un
+      commentaire sur leur état, visible par les autres visiteurs.</li>
+      <li><strong>Pas de validation manuelle</strong> — les modifications sont appliquées immédiatement. C'est un pari
+      sur la bonne foi des gens qui utilisent le site, comme un wiki.</li>
+    </ul>
+  </div>
+
+  <h2>Ce que ce site n'est pas</h2>
+  <p>Ce n'est pas un service professionnel avec une équipe derrière, pas de publicité, pas de compte
+  premium. C'est un projet personnel, gratuit, maintenu sur mon temps libre. Les données sont fournies
+  à titre indicatif : vérifie toujours l'état réel d'un lieu avant de partir, en particulier en
+  conditions hivernales.</p>
+
+  <h2>Une erreur, une idée, un lieu manquant ?</h2>
+  <p>Le plus rapide reste de corriger directement la fiche sur la carte. Pour tout le reste — bug,
+  suggestion, question — un <a href="legal/mentions-legales.html" style="color:var(--eau)">formulaire de contact</a>
+  est disponible en bas de la page mentions légales.</p>
+
+  <div class="cta-finale">
+    <p>Toutes les données sont aussi disponibles en libre accès.</p>
+    <a class="btn-primaire" href="carte.html">Ouvrir la carte →</a>
+  </div>
+</div>
+
+<footer>
+  <div class="footer-inner">
+    <div class="footer-logo">
+      <svg viewBox="0 0 44 40" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M3 33 L15 12 L22 24 L28 14 L41 33"/>
+        <circle cx="34" cy="7" r="3.4" fill="var(--accent)" stroke="none"/>
+      </svg>
+      Refuges des Pyrénées
+    </div>
+    <div class="footer-liens">
+      <a href="carte.html">Carte</a>
+      <a href="a-propos.html">À propos</a>
+      <a href="api/index.html">API</a>
+      <a href="legal/mentions-legales.html">Mentions légales</a>
+      <a href="legal/confidentialite.html">Confidentialité</a>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

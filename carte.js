@@ -54,7 +54,24 @@ function initialiser(){
   document.getElementById('s-total').textContent=REFUGES.length;
   majMarqueursVisibles();
   appliquer();
-  if(typeof initZoneParDefaut==='function') initZoneParDefaut();
+
+  // Lien direct depuis une autre page (ex: profil.html) : carte.html#refuge=ID
+  // Lien direct depuis une autre page (profil, fiche SEO, API publique...) :
+  // carte.html?refuge=ID ou carte.html#refuge=ID — on accepte les deux formats.
+  const idCible = new URLSearchParams(location.search).get('refuge')
+    || (location.hash.match(/#refuge=(.+)/)||[])[1];
+  const iCible = idCible ? REFUGES.findIndex(r=>r.id===decodeURIComponent(idCible)) : -1;
+
+  if(typeof initZoneParDefaut==='function'){
+    if(iCible>-1 && typeof zoneDe==='function'){
+      // ouvre directement la bonne zone si le lieu ciblé n'y est pas
+      initZoneParDefaut(zoneDe(REFUGES[iCible])).then(()=>{
+        setTimeout(()=>selectionner(iCible,true), 400);
+      });
+    } else {
+      initZoneParDefaut();
+    }
+  }
 }
 
 // Ajoute au cluster uniquement les marqueurs de la zone active.
@@ -163,6 +180,15 @@ function initCarte(){
     topo:{nom:'OpenTopoMap',clair:true,couche:L.tileLayer('https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png',{maxZoom:17,attribution:'© OpenStreetMap, SRTM · © OpenTopoMap (CC-BY-SA)'})}
   };
   fonds.sombre.couche.addTo(map);
+  fondActuel='sombre';
+  if(document.body.classList.contains('theme-clair')){
+    map.removeLayer(fonds.sombre.couche);
+    fonds.topo.couche.addTo(map);
+    fondActuel='topo';
+    document.body.classList.add('mode-topo');
+  }
+  const lblFond=document.getElementById('lbl-fond');
+  if(lblFond) lblFond.textContent=fonds[fondActuel].nom;
   L.control.scale({imperial:false,metric:true,position:'bottomleft',maxWidth:160}).addTo(map);
   cluster=L.markerClusterGroup({
     maxClusterRadius:45,
@@ -201,9 +227,10 @@ function alignerAutourMoiSurZoom(){
 function basculerTheme(){
   const clair = document.body.classList.toggle('theme-clair');
   try { localStorage.setItem('refuges_theme', clair ? 'clair' : 'sombre'); } catch(e){}
-  // rafraîchir le fond de carte selon le thème
-  if(typeof map!=='undefined' && map){
-    if(clair && fondActuel==='sombre'){ /* garde le fond, juste l'UI change */ }
+  // le fond de carte suit le thème : sombre carto en thème sombre, topo (clair) en thème clair
+  if(typeof map!=='undefined' && map && fonds){
+    if(clair && fondActuel==='sombre') appliquerFond('topo');
+    else if(!clair && fondActuel==='topo') appliquerFond('sombre');
   }
 }
 
