@@ -720,7 +720,10 @@ body.mode-topo .cluster{background:var(--accent)!important;color:var(--sur-accen
 /* zoom Leaflet déplacé en bas à droite (la marque occupe le haut gauche) */
 .leaflet-top.leaflet-left{top:auto;left:auto;right:10px;bottom:40px}
 
-/* fond sombre : tuiles CartoDB Dark Matter nativement sombres (voir carte.js) */
+/* fond sombre : tuiles CartoDB Dark Matter nativement sombres (voir carte.js).
+   Boost léger de saturation pour faire ressortir l'eau (bleu) et la végétation
+   (vert) sans réintroduire le coût de l'ancien filtre à 5 fonctions. */
+.fond-sombre-sature{filter:saturate(2.2) brightness(1.08)}
 
 /* ── Marqueurs sur fond topo : couleurs renforcées, bien visibles sur le beige ── */
 body.mode-topo .marqueur{border:2.5px solid #fff;box-shadow:0 1px 5px rgba(0,0,0,.5)}

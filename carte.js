@@ -146,11 +146,11 @@ function initCarte(){
     sombre:{
       nom:'Sombre', clair:false,
       couche: L.layerGroup([
-        // fond sombre de base — vrai fond sombre CartoDB, pas de filtre CSS
-        // (l'inversion CSS d'un fond clair coûtait très cher au rendu pendant
-        // les déplacements de carte : recalcul du filtre sur chaque tuile)
+        // fond sombre de base — vrai fond sombre CartoDB, + léger boost de
+        // saturation (1 seule fonction CSS, coût quasi nul, pas comme
+        // l'ancien filtre à 5 fonctions qui faisait ramer)
         L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_nolabels/{z}/{x}/{y}{r}.png',
-          {maxZoom:20, attribution:'© OpenStreetMap, © CARTO'}),
+          {maxZoom:20, attribution:'© OpenStreetMap, © CARTO', className:'fond-sombre-sature'}),
         // ombrage du relief (Esri, fiable) pour donner du volume
         L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/Elevation/World_Hillshade_Dark/MapServer/tile/{z}/{y}/{x}',
           {maxZoom:16, opacity:0.5, className:'couche-hillshade'}),
