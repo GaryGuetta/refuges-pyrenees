@@ -146,11 +146,12 @@ function initCarte(){
     sombre:{
       nom:'Sombre', clair:false,
       couche: L.layerGroup([
-        // fond sombre de base — vrai fond sombre CartoDB, + léger boost de
-        // saturation (1 seule fonction CSS, coût quasi nul, pas comme
-        // l'ancien filtre à 5 fonctions qui faisait ramer)
-        L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_nolabels/{z}/{x}/{y}{r}.png',
-          {maxZoom:20, attribution:'© OpenStreetMap, © CARTO', className:'fond-sombre-sature'}),
+        // fond sombre de base — Voyager (coloré) inversé en sombre par CSS.
+        // Dark Matter (utilisé avant) est un vrai gris neutre, aucun filtre
+        // ne peut en sortir de la couleur. Ici on garde le filtre au strict
+        // minimum (2 fonctions) pour limiter le coût pendant les déplacements.
+        L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager_nolabels/{z}/{x}/{y}{r}.png',
+          {maxZoom:20, attribution:'© OpenStreetMap, © CARTO', className:'fond-sombre-invert'}),
         // ombrage du relief (Esri, fiable) pour donner du volume
         L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/Elevation/World_Hillshade_Dark/MapServer/tile/{z}/{y}/{x}',
           {maxZoom:16, opacity:0.5, className:'couche-hillshade'}),
