@@ -36,7 +36,7 @@
 </head>
 <body>
 <div class="page">
-  <a class="retour" href="../index.html">← Retour à la carte</a>
+  <a class="retour" href="../carte.html">← Retour à la carte</a>
   <h1>API <span>Refuges des Pyrénées</span></h1>
   <p class="sous">Données normalisées des refuges, cabanes et abris du versant nord des Pyrénées et d'Andorre — en JSON et GeoJSON, librement utilisables avec attribution.</p>
 
@@ -89,7 +89,7 @@
   <pre><code>const rep = await fetch('https://TON-SITE/api/urls.json');
 const urls = await rep.json();
 
-// urls['cabane-de-xyz-42-1234-1-5678'] === 'https://TON-SITE/index.html?refuge=cabane-de-xyz-...'
+// urls['cabane-de-xyz-42-1234-1-5678'] === 'https://TON-SITE/carte.html?refuge=cabane-de-xyz-...'
 bouton.href = urls[idDuRefuge];</code></pre>
 
   <pre><code># En ligne de commande

@@ -119,7 +119,7 @@ ${JSON.stringify({
 </head>
 <body>
 <div class="page">
-  <a class="retour" href="../index.html">← Retour à la carte</a>
+  <a class="retour" href="../carte.html">← Retour à la carte</a>
   <div class="tag">${echapper(typeLbl)}</div>
   <h1>${nom}</h1>
   <p class="lieu">${echapper(lieu)}</p>
@@ -136,7 +136,7 @@ ${JSON.stringify({
 
   <p class="coord">Coordonnées : ${r.lat?.toFixed(5)}, ${r.lon?.toFixed(5)}</p>
 
-  <a class="btn" href="${URL_SITE}/index.html?refuge=${encodeURIComponent(r.id)}">Voir sur la carte interactive →</a>
+  <a class="btn" href="${URL_SITE}/carte.html?refuge=${encodeURIComponent(r.id)}">Voir sur la carte interactive →</a>
 
   <p class="note">Informations collectées automatiquement et complétées par la communauté — vérifie
   toujours l'état réel du lieu avant de partir en randonnée.</p>
@@ -168,7 +168,7 @@ async function main(){
   ).join('\n');
   const sitemap = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url><loc>${URL_SITE}/index.html</loc></url>
+  <url><loc>${URL_SITE}/carte.html</loc></url>
 ${urls}
 </urlset>`;
   await writeFile(path.join(RACINE, 'sitemap.xml'), sitemap);

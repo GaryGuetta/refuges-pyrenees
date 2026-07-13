@@ -63,7 +63,7 @@ async function chargerTousLesRefuges(){
 function versPublic(r){
   return {
     id: r.id,
-    url: `${URL_SITE}/index.html?refuge=${encodeURIComponent(r.id)}`,
+    url: `${URL_SITE}/carte.html?refuge=${encodeURIComponent(r.id)}`,
     nom: r.nom,
     lat: r.lat,
     lon: r.lon,
