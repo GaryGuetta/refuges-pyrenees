@@ -510,7 +510,11 @@ body.theme-clair .navbar-btn .ico-soleil{display:block}
 .corps{flex:1;display:flex;min-height:0;position:relative}
 
 /* ── Page profil dédiée ── */
-.page-profil{max-width:920px;margin:0 auto;padding:40px 24px 80px;overflow-y:auto;height:100%}
+/* La page profil défile normalement, contrairement à la carte qui occupe
+   l'écran entier. Sans ça, .app{height:100vh;overflow:hidden} et le
+   overflow-y de la page créent deux barres de défilement imbriquées. */
+body.page-simple .app{height:auto;min-height:100vh;overflow:visible}
+.page-profil{max-width:720px;margin:0 auto;padding:48px 24px 64px}
 .page-profil h1{font-size:24px;font-weight:800;letter-spacing:-.02em;margin-bottom:26px;display:flex;align-items:center;gap:10px}
 .page-profil h1 svg{color:var(--accent)}
 
@@ -1022,16 +1026,40 @@ body.mode-topo .marqueur.visite{border-color:#fff;box-shadow:0 0 0 3px #2f9560,0
 .pied-page a{color:var(--txt3);text-decoration:none;transition:color .15s}
 .pied-page a:hover{color:var(--accent)}
 
-/* ── Consentement RGPD et lien mot de passe oublié (page profil) ── */
-.auth-consent{
-  display:flex;align-items:flex-start;gap:9px;margin-top:16px;
-  font-size:12px;color:var(--txt3);line-height:1.5;cursor:pointer;
+/* ── Formulaire de connexion (page profil) ── */
+.profil-carte-auth{max-width:400px;margin:0 auto;padding:32px 28px}
+
+.auth-tete{text-align:center;margin-bottom:26px}
+.auth-ico{
+  width:44px;height:44px;margin:0 auto 14px;border-radius:13px;
+  background:color-mix(in srgb,var(--accent) 13%,transparent);
+  display:flex;align-items:center;justify-content:center;color:var(--accent);
 }
-.auth-consent input{margin-top:2px;flex-shrink:0;accent-color:var(--accent);cursor:pointer}
+.auth-ico svg{width:22px;height:22px}
+.auth-tete h2{font-size:18px;font-weight:800;letter-spacing:-.02em;margin-bottom:6px;color:var(--txt)}
+.auth-tete p{font-size:13px;color:var(--txt2);line-height:1.55;margin:0}
+
+.profil-carte-auth .champ + .champ{margin-top:14px}
+
+.auth-consent{
+  display:flex;align-items:flex-start;gap:9px;margin-top:18px;
+  font-size:12px;color:var(--txt2);line-height:1.5;cursor:pointer;
+}
+.auth-consent input{margin-top:1px;flex-shrink:0;accent-color:var(--accent);cursor:pointer;width:14px;height:14px}
 .auth-consent a{color:var(--eau)}
+.auth-consent em{font-style:normal;color:var(--txt3)}
+
+.auth-msg{font-size:12.5px;margin-top:12px;display:none;line-height:1.5;
+  border-radius:9px;padding:9px 12px}
+.auth-msg-err{color:var(--corail);background:color-mix(in srgb,var(--corail) 10%,transparent)}
+.auth-msg-ok{color:var(--eau);background:color-mix(in srgb,var(--eau) 10%,transparent)}
+
+.auth-boutons{display:flex;gap:10px;margin-top:20px}
+.auth-boutons .btn{flex:1;padding:12px}
+
 .auth-lien-mdp{
   display:block;width:100%;margin-top:14px;padding:6px;
   background:none;border:none;color:var(--txt3);font-family:inherit;font-size:12.5px;
-  text-decoration:underline;cursor:pointer;transition:color .15s;
+  cursor:pointer;transition:color .15s;
 }
 .auth-lien-mdp:hover{color:var(--accent)}

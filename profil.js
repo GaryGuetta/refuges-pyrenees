@@ -9,30 +9,46 @@ function rendreProfilComplet() {
   if(!estConnecte()){
     box.innerHTML = `
     <div class="profil-carte profil-carte-auth">
-      <p style="color:var(--txt2);font-size:13.5px;line-height:1.6;margin-bottom:20px">
-        Connecte-toi pour suivre les refuges que t'as visités, avec tes statistiques personnelles.
-      </p>
-      <div class="champ"><label>Email</label><input type="email" id="auth-email" autocomplete="email"></div>
-      <div class="champ" style="margin-top:12px"><label>Mot de passe</label><input type="password" id="auth-password" autocomplete="current-password"></div>
+      <div class="auth-tete">
+        <div class="auth-ico">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0Z"/><circle cx="12" cy="10" r="3"/></svg>
+        </div>
+        <h2>Suis tes refuges</h2>
+        <p>Marque les lieux visités, laisse un mot sur leur état, garde tes statistiques.</p>
+      </div>
+
+      <div class="champ"><label for="auth-email">Email</label><input type="email" id="auth-email" autocomplete="email" placeholder="toi@exemple.fr"></div>
+      <div class="champ"><label for="auth-password">Mot de passe</label><input type="password" id="auth-password" autocomplete="current-password" placeholder="••••••••"></div>
 
       <label class="auth-consent">
-        <input type="checkbox" id="auth-consent">
-        <span>J'accepte que mon email et mes contributions soient conservés pour faire
-        fonctionner mon compte — voir la
-        <a href="legal/confidentialite.html" target="_blank" rel="noopener">politique de confidentialité</a>.
-        Obligatoire uniquement pour créer un compte.</span>
+        <input type="checkbox" id="auth-consent" autocomplete="off">
+        <span>J'accepte la <a href="legal/confidentialite.html" target="_blank" rel="noopener">politique de confidentialité</a>
+        <em>— requis pour créer un compte</em></span>
       </label>
 
-      <div id="auth-erreur" style="color:var(--corail);font-size:12px;margin-top:8px;display:none"></div>
-      <div id="auth-info" style="color:var(--eau);font-size:12px;margin-top:8px;display:none;line-height:1.5"></div>
-      <div style="display:flex;gap:10px;margin-top:18px">
-        <button class="btn btn-save" style="flex:1" onclick="handleConnexion()">Se connecter</button>
-        <button class="btn btn-annuler" style="flex:1" onclick="handleInscription()">Créer un compte</button>
+      <div id="auth-erreur" class="auth-msg auth-msg-err"></div>
+      <div id="auth-info" class="auth-msg auth-msg-ok"></div>
+
+      <div class="auth-boutons">
+        <button class="btn btn-save" onclick="handleConnexion()">Se connecter</button>
+        <button class="btn btn-annuler" onclick="handleInscription()">Créer un compte</button>
       </div>
       <button class="auth-lien-mdp" onclick="handleMdpOublie()">Mot de passe oublié ?</button>
     </div>`;
+    // L'écran de connexion a son propre en-tête : afficher aussi le titre
+    // "Mon profil" au-dessus ferait deux titres empilés.
+    const titre = document.getElementById('profil-titre');
+    if(titre) titre.style.display = 'none';
+
+    // Le navigateur restaure l'état des cases au rechargement. Or un
+    // consentement RGPD doit être un acte volontaire à chaque fois.
+    const cons = document.getElementById('auth-consent');
+    if(cons) cons.checked = false;
     return;
   }
+
+  const titreOn = document.getElementById('profil-titre');
+  if(titreOn) titreOn.style.display = '';
 
   const clesVisitees = Object.keys(PASSAGES).filter(k => mesPassagesDe(k).length > 0);
   const refugesVisites = REFUGES.filter(r => clesVisitees.includes(r.id));
