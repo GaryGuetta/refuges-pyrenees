@@ -41,7 +41,7 @@ function categorie(t){
   return 'cabane';
 }
 
-function tagTxt(cat){return {refuge:'Refuge gardé',libre:'Cabane ouverte',cabane:'Cabane / abri',ruine:'Ruine'}[cat]}
+function tagTxt(cat){return {refuge:'Refuge gardé',libre:'Cabane / abri',cabane:'Cabane / abri',ruine:'Ruine',fermee:'Fermée'}[cat]||cat}
 
 function lireCoord(g){
   // GeoJSON Point => [lon,lat,(alt)]

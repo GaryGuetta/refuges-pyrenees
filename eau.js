@@ -165,17 +165,8 @@ async function majEauOSM(r, prefixe=''){
 
   const saison = principal.saisonnier ? ' <span class="eau-saison">saisonnier</span>' : '';
   const srcP = principal.src ? ` <span class="eau-src-tag">${principal.src}</span>` : '';
-  box.innerHTML=`<span style="color:var(--cyan)">${nomEau(principal)}${saison}${srcP}</span><span class="eau-osm-dist">à ${fmtDist(principal.dist)}</span>`;
+  box.innerHTML=`<span style="color:var(--eau)">${nomEau(principal)}${saison}${srcP}</span><span class="eau-osm-dist">à ${fmtDist(principal.dist)}</span>`;
 
-  // Renseigne automatiquement "Eau à proximité : Oui" si un point d'eau est à moins de 250 m
-  if(principal.dist <= 250){
-    const cell=document.getElementById(prefixe+'cell-eau-proximite');
-    if(cell && cell.textContent.trim()!=='Oui'){
-      cell.textContent='Oui';
-      cell.style.color='var(--cyan)';
-      cell.title=`Point d'eau détecté à ${Math.round(principal.dist)} m`;
-    }
-  }
   cont.querySelector('.eau-osm-liste')?.remove();
   cont.querySelector('.eau-osm-src')?.remove();
   let html='';

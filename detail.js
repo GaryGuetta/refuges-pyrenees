@@ -23,25 +23,25 @@ function friseEau(r){
 }
 
 function afficherDetail(r){
-  const typeLbl=r.typeNum?TYPE_LABEL[r.typeNum]:tagTxt(r.cat);
   const eau=fmtBool(r.eau), bois=fmtBool(r.bois);
   const badge=r.modifie?'<span class="modifie-badge">modifié</span>':'';
-  const sousTitre=[r.ville, r.region, typeLbl].filter(Boolean).join(' · ');
+  const sousTitre=[r.ville, r.departement || r.region].filter(Boolean).join(' · ');
 
   // Panneau volontairement compact : juste de quoi se faire une idée
   // rapide. Le détail complet (photos, description, météo, point d'eau…)
   // est sur la fiche plein écran, via "Voir en grand".
+  // Capacité : toujours affichée, même absente ("—"), pour que l'info
+  // manquante se voie au lieu que la ligne disparaisse silencieusement.
+  const capParts=[];
+  if(r.capEte!=null) capParts.push(r.capEte+' été');
+  if(r.capHiver!=null) capParts.push(r.capHiver+' hiver');
+
   const cellules=[
     {l:'Altitude', v:r.alt?r.alt+' m':'—'},
-    {l:'Eau à proximité', v:eau||'—', couleur:eau==='Oui'?'var(--cyan)':eau==='Non'?'var(--texte-3)':'var(--texte)'},
-    {l:'Bois', v:bois||'—', couleur:bois==='Oui'?'var(--ambre)':bois==='Non'?'var(--texte-3)':'var(--texte)'},
+    {l:'Eau à proximité', v:eau||'—', couleur:eau==='Oui'?'var(--eau)':eau==='Non'?'var(--txt3)':'var(--txt)'},
+    {l:'Bois', v:bois||'—', couleur:bois==='Oui'?'var(--accent)':bois==='Non'?'var(--txt3)':'var(--txt)'},
+    {l:'Capacité', v:capParts.join(' / ')||'—'},
   ];
-  if(r.capEte!=null || r.capHiver!=null){
-    const parts=[];
-    if(r.capEte!=null) parts.push(r.capEte+' été');
-    if(r.capHiver!=null) parts.push(r.capHiver+' hiver');
-    cellules.push({l:'Capacité', v:parts.join(' / ')});
-  }
   const grilleHTML=cellules.map(c=>`<div class="d-cell"><div class="l">${c.l}</div><div class="v"${c.couleur?` style="color:${c.couleur}"`:''}>${c.v}</div></div>`).join('');
 
   document.getElementById('detail-vide').style.display='none';

@@ -8,7 +8,7 @@
     --accent:#f0a04b;               /* ambre lanterne */
     --accent-h:#f7b165;--sur-accent:#201304;
     /* catégories */
-    --c-refuge:#f0a04b;--c-libre:#95c189;--c-cabane:#b9a68d;--c-ruine:#7d7c78;
+    --c-refuge:#f0a04b;--c-libre:#95c189;--c-cabane:#b9a68d;--c-ruine:#7d7c78;--c-fermee:#d9564a;
     --eau:#5aa9dc;--eau-potable:#6cc794;
     --ombre:0 12px 32px rgba(0,0,0,.5),0 2px 8px rgba(0,0,0,.4);
     --ombre-leg:0 4px 14px rgba(0,0,0,.35);
@@ -27,7 +27,7 @@
     --ligne:rgba(25,22,15,.11);
     --txt:#221f19;--txt2:#5d5a52;--txt3:#918e85;
     --accent:#c1762c;--accent-h:#d3873c;--sur-accent:#fff;
-    --c-refuge:#c1762c;--c-libre:#4f8a45;--c-cabane:#8d7250;--c-ruine:#8a887f;
+    --c-refuge:#c1762c;--c-libre:#4f8a45;--c-cabane:#8d7250;--c-ruine:#8a887f;--c-fermee:#b3453c;
     --eau:#2f7fb5;--eau-potable:#2f9560;
     --ombre:0 12px 32px rgba(30,25,15,.16),0 2px 8px rgba(30,25,15,.1);
     --ombre-leg:0 4px 14px rgba(30,25,15,.12);
@@ -87,6 +87,7 @@
   .tag.libre{background:color-mix(in srgb,var(--c-libre) 16%,transparent);color:var(--c-libre)}
   .tag.cabane{background:color-mix(in srgb,var(--c-cabane) 16%,transparent);color:var(--c-cabane)}
   .tag.ruine{background:color-mix(in srgb,var(--c-ruine) 16%,transparent);color:var(--c-ruine)}
+  .tag.fermee{background:color-mix(in srgb,var(--c-fermee) 16%,transparent);color:var(--c-fermee)}
   .cr-region{font-size:11px;color:var(--texte-2)}
   #map{width:100%;height:100%;background:var(--noir)}
 
@@ -122,7 +123,14 @@
   body.mode-topo .leaflet-control-scale-line{background:rgba(255,255,255,.9)!important;color:#222!important;border-color:#bbb!important}
 
   .marqueur{width:16px;height:16px;border-radius:50%;border:2.5px solid var(--noir);cursor:pointer;transition:transform .15s;box-shadow:0 0 0 1px rgba(255,255,255,.12)}
-  .marqueur.libre{background:var(--c-libre)}.marqueur.refuge{background:var(--c-refuge)}.marqueur.cabane{background:var(--c-cabane)}.marqueur.ruine{background:var(--c-ruine)}
+  .marqueur.libre{background:var(--c-libre)}.marqueur.refuge{background:var(--c-refuge)}.marqueur.cabane{background:var(--c-cabane)}.marqueur.ruine{background:var(--c-ruine)}.marqueur.fermee{background:var(--c-fermee)}
+  .marqueur.indisponible{position:relative;filter:grayscale(65%) brightness(.9);opacity:.85}
+  .marqueur.indisponible::after{
+    content:'';position:absolute;inset:-3px;border-radius:50%;pointer-events:none;
+    background:
+      linear-gradient(45deg, transparent 44%, #e0392f 44%, #e0392f 56%, transparent 56%),
+      linear-gradient(-45deg, transparent 44%, #e0392f 44%, #e0392f 56%, transparent 56%);
+  }
   .marqueur.eau{background:var(--eau)}.marqueur.potable{background:var(--eau-potable)}
   .marqueur:hover,.marqueur.actif{transform:scale(1.5)}
   .marqueur.actif{box-shadow:0 0 0 4px rgba(94,186,125,.25),0 0 18px rgba(94,186,125,.5)}
@@ -145,7 +153,7 @@
   .pop-cell .v{font-size:14px;font-weight:600;font-variant-numeric:tabular-nums}
 
   /* modal édition */
-  .overlay{position:fixed;inset:0;background:rgba(5,6,9,.78);backdrop-filter:blur(4px);z-index:2000;display:none;align-items:center;justify-content:center;padding:20px}
+  .overlay{position:fixed;inset:0;background:rgba(5,6,9,.78);backdrop-filter:blur(4px);z-index:2600;display:none;align-items:center;justify-content:center;padding:20px}
   .overlay.ouvert{display:flex}
   .modal{background:var(--noir-2);border:1px solid var(--bord);border-radius:18px;width:100%;max-width:440px;max-height:88vh;overflow-y:auto;box-shadow:0 24px 70px rgba(0,0,0,.7)}
   .modal-tete{display:flex;align-items:center;justify-content:space-between;padding:20px 22px;border-bottom:1px solid var(--bord)}
@@ -192,6 +200,7 @@
   .d-tag.libre{background:color-mix(in srgb,var(--c-libre) 16%,transparent);color:var(--c-libre)}
   .d-tag.cabane{background:color-mix(in srgb,var(--c-cabane) 16%,transparent);color:var(--c-cabane)}
   .d-tag.ruine{background:color-mix(in srgb,var(--c-ruine) 16%,transparent);color:var(--c-ruine)}
+  .d-tag.fermee{background:color-mix(in srgb,var(--c-fermee) 16%,transparent);color:var(--c-fermee)}
   .d-nom{font-size:19px;font-weight:700;letter-spacing:-0.02em;line-height:1.25;padding-right:34px}
   .d-region{font-size:12px;color:var(--cyan);margin-top:4px;font-weight:500}
   .d-source{font-size:11px;color:var(--texte-3);margin-top:6px}
@@ -782,6 +791,7 @@ body.mode-topo .marqueur.refuge{background:#d97b1f}   /* ambre soutenu */
 body.mode-topo .marqueur.libre{background:#3f7d36}    /* vert forêt */
 body.mode-topo .marqueur.cabane{background:#7c4a1e}   /* brun chocolat (au lieu du taupe pâle) */
 body.mode-topo .marqueur.ruine{background:#55534e}    /* gris anthracite */
+body.mode-topo .marqueur.fermee{background:#a83a30}   /* rouge brique */
 /* Lieu déjà visité : anneau vert + fond conservé, plus net */
 .marqueur.visite{border-color:var(--eau-potable);box-shadow:0 0 0 2.5px var(--eau-potable)}
 body.mode-topo .marqueur.visite{border-color:#fff;box-shadow:0 0 0 3px #2f9560,0 1px 5px rgba(0,0,0,.5)}
@@ -1001,3 +1011,13 @@ body.mode-topo .marqueur.visite{border-color:#fff;box-shadow:0 0 0 3px #2f9560,0
 
 /* ── Bouton API : utilise le style .navbar-btn générique ── */
 .btn-liste-mobile{display:none}
+
+/* ── Pied de page (profil) : liens légaux discrets, obligatoires sur chaque page ── */
+.pied-page{
+  display:flex;justify-content:center;flex-wrap:wrap;gap:20px;
+  margin:36px auto 8px;padding-top:22px;
+  border-top:1px solid var(--ligne);
+  font-size:12.5px;
+}
+.pied-page a{color:var(--txt3);text-decoration:none;transition:color .15s}
+.pied-page a:hover{color:var(--accent)}

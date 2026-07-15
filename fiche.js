@@ -4,11 +4,10 @@
 
 function ouvrirFiche(i){
   const r = REFUGES[i];
-  const typeLbl = r.typeNum ? TYPE_LABEL[r.typeNum] : tagTxt(r.cat);
   const eau = fmtBool(r.eau), bois = fmtBool(r.bois), cheminee = fmtBool(r.cheminee);
   const desc = r.desc || 'Aucune description disponible pour ce lieu.';
   const photos = photosDe(r._cle);
-  const sousTitre=[r.ville, r.departement || r.region, typeLbl].filter(Boolean).join(' · ');
+  const sousTitre=[r.ville, r.departement || r.region].filter(Boolean).join(' · ');
 
   const statsSupp=[];
   if(r.capEte!=null) statsSupp.push({v:r.capEte, l:'Cap. été'});

@@ -114,7 +114,7 @@ async function main(){
     genere_le: new Date().toISOString(),
     nombre: tous.length,
     regions,
-    categories: { refuge:'Refuge gardé', libre:'Cabane ouverte', cabane:'Cabane / abri', ruine:'Ruine' },
+    categories: { refuge:'Refuge gardé', cabane:'Cabane / abri', ruine:'Ruine', fermee:'Fermée (édition manuelle)' },
     usage: "Chaque refuge inclut un champ \"url\" : lien direct vers sa fiche sur la carte interactive, prêt à l'emploi pour un bouton de redirection depuis un site tiers."
   };
 

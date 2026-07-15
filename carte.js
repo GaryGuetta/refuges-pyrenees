@@ -38,7 +38,8 @@ function basculerFond(){
 }
 function iconeRefuge(r){
   const el=document.createElement('div');
-  el.className='marqueur '+r.cat+(estVisite(r)?' visite':'');
+  const indispo=(r.cat==='fermee'||r.cat==='ruine')?' indisponible':'';
+  el.className='marqueur '+r.cat+indispo+(estVisite(r)?' visite':'');
   return L.divIcon({html:el.outerHTML,className:'',iconSize:[16,16],iconAnchor:[8,8]});
 }
 function initialiser(){
@@ -55,22 +56,20 @@ function initialiser(){
   majMarqueursVisibles();
   appliquer();
 
-  // Lien direct depuis une autre page (ex: profil.html) : carte.html#refuge=ID
-  // Lien direct depuis une autre page (profil, fiche SEO, API publique...) :
+  // Lien direct depuis une autre page (profil, API publique...) :
   // carte.html?refuge=ID ou carte.html#refuge=ID — on accepte les deux formats.
+  // On ouvre la fiche tout de suite (elle recouvre l'écran), sans attendre
+  // l'animation de la carte qui continue de se préparer en arrière-plan.
   const idCible = new URLSearchParams(location.search).get('refuge')
     || (location.hash.match(/#refuge=(.+)/)||[])[1];
   const iCible = idCible ? REFUGES.findIndex(r=>r.id===decodeURIComponent(idCible)) : -1;
 
-  if(typeof initZoneParDefaut==='function'){
-    if(iCible>-1 && typeof zoneDe==='function'){
-      // ouvre directement la bonne zone si le lieu ciblé n'y est pas
-      initZoneParDefaut(zoneDe(REFUGES[iCible])).then(()=>{
-        setTimeout(()=>selectionner(iCible,true), 400);
-      });
-    } else {
-      initZoneParDefaut();
-    }
+  if(iCible>-1 && typeof zoneDe==='function'){
+    selectionner(iCible,false);
+    ouvrirFiche(iCible);
+    if(typeof initZoneParDefaut==='function') initZoneParDefaut(zoneDe(REFUGES[iCible]));
+  } else if(typeof initZoneParDefaut==='function'){
+    initZoneParDefaut();
   }
 }
 
@@ -199,6 +198,7 @@ function initCarte(){
   });
   map.addLayer(cluster);
   map.on('click',onClickCarte);
+  map.on('moveend zoomend',()=>{ if(typeof appliquer==='function') appliquer(); });
   map.attributionControl.addAttribution('<a href="legal/mentions-legales.html">Mentions légales</a> · <a href="legal/confidentialite.html">Confidentialité</a>');
   charger();
 

@@ -1,4 +1,5 @@
 {
   "buildCommand": "node outils/generer-api-publique.mjs && node outils/generer-pages-refuges.mjs",
-  "outputDirectory": "."
+  "outputDirectory": ".",
+  "cleanUrls": true
 }

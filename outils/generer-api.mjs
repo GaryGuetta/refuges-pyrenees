@@ -28,9 +28,10 @@ const TYPE_LABEL = {
 function categorie(t){
   t = +t;
   if (t===5 || t===6) return 'refuge';
-  if (t===2 || t===3) return 'libre';
-  if (t===1 || t===4) return 'cabane';
   if (t===7) return 'ruine';
+  // types 1 (fermée), 2/3 (ouverte) et 4 (orri/abri) fusionnés : la nuance
+  // ouverte/fermée n'est de toute façon pas fiable à la source, et "Fermée"
+  // est désormais une catégorie à part entière réservée à l'édition manuelle.
   return 'cabane';
 }
 

@@ -36,6 +36,8 @@
   }
   .btn-envoyer:disabled{opacity:.5;cursor:default}
   .form-msg{font-size:13px;margin-top:12px;display:none}
+  .form-rgpd{font-size:12px;color:var(--txt3);margin-top:14px;line-height:1.55}
+  .form-rgpd a{color:var(--txt2)}
   .form-msg.ok{color:#8fc99a;display:block}
   .form-msg.err{color:var(--erreur);display:block}
   .bloc{background:var(--panneau);border:1px solid var(--ligne);border-radius:14px;padding:20px 22px;margin-top:14px}
@@ -92,6 +94,9 @@
     </div>
     <button class="btn-envoyer" id="c-btn" onclick="envoyerContact()">Envoyer</button>
     <div class="form-msg" id="c-msg"></div>
+    <p class="form-rgpd">Ton email et ton message sont utilisés uniquement pour te répondre, et ne sont
+    ni revendus ni transmis à des tiers. Tu peux demander leur suppression à tout moment — voir la
+    <a href="confidentialite.html">politique de confidentialité</a>.</p>
   </div>
 </div>
 

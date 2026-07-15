@@ -62,7 +62,7 @@ function pageHTML(r){
     r.description?.slice(0,155) ||
     `${typeLbl}${r.altitude ? ', à ' + r.altitude + ' m d\u2019altitude' : ''}${lieu ? ' — ' + lieu : ''}. Infos à jour : eau, bois, capacité, accès.`
   );
-  const url = `${URL_SITE}/refuge/${r.id}.html`;
+  const url = `${URL_SITE}/refuge/${r.id}`;
   const capaciteHTML = (r.cap_ete!=null || r.cap_hiver!=null)
     ? `<div class="stat"><div class="v">${r.cap_ete ?? '—'} / ${r.cap_hiver ?? '—'}</div><div class="l">Places été / hiver</div></div>` : '';
 
@@ -164,7 +164,7 @@ async function main(){
 
   // sitemap.xml
   const urls = refuges.filter(r=>r.id).map(r =>
-    `  <url><loc>${URL_SITE}/refuge/${r.id}.html</loc></url>`
+    `  <url><loc>${URL_SITE}/refuge/${r.id}</loc></url>`
   ).join('\n');
   const sitemap = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">

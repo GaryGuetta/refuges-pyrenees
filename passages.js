@@ -111,7 +111,7 @@ function rendrePassages(i){
         ${fmtDate(p.date)}
       </div>
       ${bal?`<div class="hist-balises">${bal}</div>`:''}
-      ${p.com?`<div class="hist-item-com">${p.com.replace(/</g,'&lt;')}</div>`:(bal?'':'<div class="hist-item-com" style="color:var(--texte-3);font-style:italic">Sans commentaire</div>')}
+      ${p.com?`<div class="hist-item-com">${p.com.replace(/</g,'&lt;')}</div>`:(bal?'':'<div class="hist-item-com" style="color:var(--txt3);font-style:italic">Sans commentaire</div>')}
     </div>`;
   }).join('');
 }

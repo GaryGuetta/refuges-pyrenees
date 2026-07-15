@@ -35,9 +35,24 @@
 
   <h2>Qui traite tes données ?</h2>
   <p>Ce site est édité par un particulier (voir <a href="mentions-legales.html">mentions légales</a>).
-  Les données sont stockées via Supabase (base de données et authentification) et le site est servi par
-  Vercel. Ces deux prestataires peuvent traiter des données techniques (adresse IP, journaux de connexion)
-  dans le cadre de leur propre fonctionnement, indépendamment de l'éditeur du site.</p>
+  Les données de compte et de contributions sont stockées via Supabase (base de données et
+  authentification) et le site est servi par Vercel. Ces prestataires peuvent traiter des données
+  techniques (adresse IP, journaux de connexion) dans le cadre de leur propre fonctionnement,
+  indépendamment de l'éditeur du site.</p>
+
+  <p>Par ailleurs, l'affichage des pages nécessite des appels à des services tiers. Ces services
+  reçoivent techniquement ton adresse IP du seul fait de l'affichage, sans que l'éditeur du site
+  ne leur transmette d'information sur toi :</p>
+  <ul>
+    <li><b>OpenStreetMap, CARTO, OpenTopoMap, IGN (data.geopf.fr), Esri/ArcGIS</b> — fonds de carte ;</li>
+    <li><b>Overpass API</b> — recherche des points d'eau à proximité d'un lieu ;</li>
+    <li><b>Open-Meteo</b> — prévisions météo (les coordonnées du refuge consulté sont transmises,
+    jamais ta position) ;</li>
+    <li><b>Google Fonts, jsDelivr, cdnjs (Cloudflare)</b> — polices de caractères et bibliothèques
+    d'affichage.</li>
+  </ul>
+  <p>Aucun de ces services n'est utilisé à des fins de publicité ou de suivi publicitaire. Le site
+  ne comporte ni régie publicitaire, ni outil de mesure d'audience, ni traceur commercial.</p>
 
   <h2>Quelles données sont collectées ?</h2>
   <table>
@@ -76,9 +91,14 @@
   <p>Pour exercer ces droits, utilise le <a href="mentions-legales.html">formulaire de contact</a>. Tu
   peux aussi introduire une réclamation auprès de la CNIL (<a href="https://www.cnil.fr" target="_blank" rel="noopener">cnil.fr</a>).</p>
 
-  <h2>Cookies</h2>
-  <p>Le site utilise uniquement des cookies techniques nécessaires à la connexion (session Supabase).
-  Aucun cookie publicitaire ou de mesure d'audience tiers n'est utilisé.</p>
+  <h2>Cookies et stockage local</h2>
+  <p>Le site utilise uniquement des cookies techniques nécessaires à la connexion (session Supabase),
+  ainsi qu'une donnée conservée dans le stockage local de ton navigateur (<code>refuges_theme</code>)
+  pour se souvenir du thème clair ou sombre que tu as choisi.</p>
+  <p>Ces éléments sont strictement nécessaires au fonctionnement du site et ne requièrent donc pas de
+  consentement préalable. Aucun cookie publicitaire, de profilage ou de mesure d'audience tiers n'est
+  utilisé. Tu peux les supprimer à tout moment via les réglages de ton navigateur : tu seras alors
+  déconnecté et le thème reviendra à sa valeur par défaut.</p>
 </div>
 </body>
 </html>
