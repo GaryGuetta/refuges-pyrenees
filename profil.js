@@ -14,11 +14,22 @@ function rendreProfilComplet() {
       </p>
       <div class="champ"><label>Email</label><input type="email" id="auth-email" autocomplete="email"></div>
       <div class="champ" style="margin-top:12px"><label>Mot de passe</label><input type="password" id="auth-password" autocomplete="current-password"></div>
+
+      <label class="auth-consent">
+        <input type="checkbox" id="auth-consent">
+        <span>J'accepte que mon email et mes contributions soient conservés pour faire
+        fonctionner mon compte — voir la
+        <a href="legal/confidentialite.html" target="_blank" rel="noopener">politique de confidentialité</a>.
+        Obligatoire uniquement pour créer un compte.</span>
+      </label>
+
       <div id="auth-erreur" style="color:var(--corail);font-size:12px;margin-top:8px;display:none"></div>
+      <div id="auth-info" style="color:var(--eau);font-size:12px;margin-top:8px;display:none;line-height:1.5"></div>
       <div style="display:flex;gap:10px;margin-top:18px">
         <button class="btn btn-save" style="flex:1" onclick="handleConnexion()">Se connecter</button>
         <button class="btn btn-annuler" style="flex:1" onclick="handleInscription()">Créer un compte</button>
       </div>
+      <button class="auth-lien-mdp" onclick="handleMdpOublie()">Mot de passe oublié ?</button>
     </div>`;
     return;
   }

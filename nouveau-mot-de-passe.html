@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Nouveau mot de passe — Refuges des Pyrénées</title>
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<meta name="robots" content="noindex">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --fond:#101114;--panneau:#17181c;--panneau-2:#1d1f24;
+    --ligne:rgba(255,255,255,.09);--txt:#f3f1ea;--txt2:#a9a59b;--txt3:#6f6c64;
+    --accent:#f0a04b;--eau:#5aa9dc;--corail:#c98a6f;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{font-family:'Outfit',system-ui,sans-serif;background:var(--fond);color:var(--txt);
+    line-height:1.6;min-height:100vh;display:flex;align-items:center;justify-content:center;padding:24px}
+  a{color:inherit}
+
+  .carte{width:100%;max-width:420px;background:var(--panneau);border:1px solid var(--ligne);
+    border-radius:18px;padding:32px}
+  .logo{display:flex;align-items:center;gap:10px;text-decoration:none;font-weight:600;
+    font-size:15px;margin-bottom:24px;justify-content:center}
+  .logo svg{width:24px;height:24px}
+  .logo b{color:var(--accent)}
+  h1{font-size:20px;font-weight:800;letter-spacing:-.02em;margin-bottom:8px}
+  .intro{color:var(--txt2);font-size:13.5px;margin-bottom:22px}
+
+  label{display:block;font-size:12px;color:var(--txt3);text-transform:uppercase;
+    letter-spacing:.05em;margin-bottom:6px}
+  input{width:100%;background:var(--panneau-2);border:1px solid var(--ligne);color:var(--txt);
+    border-radius:10px;padding:11px 13px;font-family:inherit;font-size:14px}
+  input:focus{outline:none;border-color:color-mix(in srgb,var(--accent) 50%,transparent)}
+  .champ + .champ{margin-top:14px}
+
+  .btn{width:100%;margin-top:20px;background:var(--accent);color:#201304;border:none;
+    border-radius:12px;padding:13px;font-family:inherit;font-weight:700;font-size:14.5px;cursor:pointer}
+  .btn:hover{filter:brightness(1.06)}
+  .btn:disabled{opacity:.5;cursor:default}
+
+  .msg{font-size:12.5px;margin-top:14px;display:none;line-height:1.5}
+  .msg.err{color:var(--corail)}
+  .msg.ok{color:var(--eau)}
+  .retour{display:block;text-align:center;margin-top:18px;font-size:12.5px;color:var(--txt3);
+    text-decoration:none}
+  .retour:hover{color:var(--accent)}
+</style>
+</head>
+<body>
+
+<div class="carte">
+  <a class="logo" href="index.html">
+    <svg viewBox="0 0 44 40" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M3 33 L15 12 L22 24 L28 14 L41 33"/>
+      <circle cx="34" cy="7" r="3.4" fill="var(--accent)" stroke="none"/>
+    </svg>
+    <span>Refuges des <b>Pyrénées</b></span>
+  </a>
+
+  <div id="zone">
+    <h1>Nouveau mot de passe</h1>
+    <p class="intro">Choisis un nouveau mot de passe pour ton compte.</p>
+
+    <div class="champ">
+      <label for="mdp1">Nouveau mot de passe</label>
+      <input type="password" id="mdp1" autocomplete="new-password">
+    </div>
+    <div class="champ">
+      <label for="mdp2">Confirme le mot de passe</label>
+      <input type="password" id="mdp2" autocomplete="new-password">
+    </div>
+
+    <div class="msg err" id="err"></div>
+    <div class="msg ok" id="ok"></div>
+
+    <button class="btn" id="btn" onclick="enregistrer()">Enregistrer</button>
+  </div>
+
+  <a class="retour" href="profil.html">← Retour au profil</a>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+<script src="config.js"></script>
+<script>
+  const err = document.getElementById('err');
+  const ok  = document.getElementById('ok');
+  const btn = document.getElementById('btn');
+
+  function afficher(zone, texte){
+    zone.textContent = texte;
+    zone.style.display = 'block';
+    (zone === err ? ok : err).style.display = 'none';
+  }
+
+  // En arrivant depuis le lien reçu par email, Supabase place un jeton de
+  // session temporaire dans l'URL. Sans lui, impossible de changer le mot de
+  // passe : le lien est périmé, déjà utilisé, ou la page a été ouverte à la main.
+  let sessionPrete = false;
+  supabaseClient.auth.onAuthStateChange((evenement) => {
+    if (evenement === 'PASSWORD_RECOVERY' || evenement === 'SIGNED_IN') sessionPrete = true;
+  });
+
+  // Laisse à Supabase le temps de lire le jeton avant de juger le lien invalide.
+  setTimeout(async () => {
+    const { data } = await supabaseClient.auth.getSession();
+    if (data?.session) sessionPrete = true;
+    if (!sessionPrete) {
+      document.getElementById('zone').innerHTML =
+        '<h1>Lien invalide ou expiré</h1>' +
+        '<p class="intro">Ce lien de réinitialisation n\'est plus valable — ils expirent après ' +
+        'une heure et ne servent qu\'une fois. Refais une demande depuis la page profil.</p>';
+    }
+  }, 1200);
+
+  async function enregistrer(){
+    const m1 = document.getElementById('mdp1').value;
+    const m2 = document.getElementById('mdp2').value;
+
+    if (!m1 || !m2)      return afficher(err, 'Remplis les deux champs.');
+    if (m1.length < 6)   return afficher(err, 'Le mot de passe doit faire au moins 6 caractères.');
+    if (m1 !== m2)       return afficher(err, 'Les deux mots de passe ne sont pas identiques.');
+
+    btn.disabled = true;
+    btn.textContent = 'Enregistrement…';
+
+    const { error } = await supabaseClient.auth.updateUser({ password: m1 });
+
+    if (error) {
+      afficher(err, error.message);
+      btn.disabled = false;
+      btn.textContent = 'Enregistrer';
+      return;
+    }
+
+    afficher(ok, 'Mot de passe modifié. Redirection vers ton profil…');
+    btn.textContent = 'Enregistré';
+    setTimeout(() => { location.href = 'profil.html'; }, 1600);
+  }
+</script>
+</body>
+</html>
