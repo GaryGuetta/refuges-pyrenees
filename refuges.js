@@ -69,7 +69,15 @@ function fermerDetail(){
 function appliquer(){
   let items=REFUGES.map((r,i)=>({r,i}));
   if(filtre!=='tous')items=items.filter(({r})=>r.cat===filtre);
-  if(recherche){const q=recherche.toLowerCase();items=items.filter(({r})=>r.nom.toLowerCase().includes(q)||r.region.toLowerCase().includes(q)||(r.departement||'').toLowerCase().includes(q))}
+  if(recherche){
+    const q=normRech(recherche);
+    items=items.filter(({r})=>
+      normRech(r.nom).includes(q)
+      || normRech(r.region).includes(q)
+      || normRech(r.departement).includes(q)
+      || normRech(r.ville).includes(q)
+    );
+  }
   // La liste ne montre que ce qui est actuellement visible sur la carte —
   // se met à jour au zoom/déplacement. Sauf en recherche active : là on
   // cherche partout dans la zone, pas seulement à l'écran.

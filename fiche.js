@@ -9,10 +9,21 @@ function ouvrirFiche(i){
   const photos = photosDe(r._cle);
   const sousTitre=[r.ville, r.departement || r.region].filter(Boolean).join(' · ');
 
-  const statsSupp=[];
-  if(r.capEte!=null) statsSupp.push({v:r.capEte, l:'Cap. été'});
-  if(r.capHiver!=null) statsSupp.push({v:r.capHiver, l:'Cap. hiver'});
-  if(cheminee) statsSupp.push({v:cheminee, l:'Cheminée', couleur:cheminee==='Oui'?'var(--accent)':'var(--txt)'});
+  // Capacité toujours affichée, même absente ("—") : sinon la case saute et
+  // une autre stat prend sa place, ce qui donne une grille au contenu variable
+  // d'une fiche à l'autre. Cohérent avec le panneau compact (voir detail.js).
+  const capParts=[];
+  if(r.capEte!=null) capParts.push(r.capEte+' été');
+  if(r.capHiver!=null) capParts.push(r.capHiver+' hiver');
+
+  const statsSupp=[
+    {v:capParts.join(' / ')||'—', l:'Capacité'},
+  ];
+  // Le champ cheminée contient soit un oui/non, soit une description libre
+  // ("Foyer ouvert", "Poêle à bois"…). Une case de stat n'accueille qu'une
+  // valeur courte : le texte libre part en ligne d'info sous la grille.
+  const chemineeTexte = (cheminee && cheminee!=='Oui' && cheminee!=='Non') ? cheminee : null;
+  if(cheminee && !chemineeTexte) statsSupp.push({v:cheminee, l:'Cheminée', couleur:cheminee==='Oui'?'var(--accent)':'var(--txt)'});
 
   // Zone photo compacte, juste sous le titre — plus de grand bandeau vide.
   const zonePhoto = photos.length
@@ -53,6 +64,7 @@ function ouvrirFiche(i){
             <div class="fiche-stat"><div class="fiche-stat-num" style="color:${bois==='Oui'?'var(--accent)':'var(--txt)'}">${bois || '—'}</div><div class="fiche-stat-lbl">Bois</div></div>
             ${statsSupp.map(s=>`<div class="fiche-stat"><div class="fiche-stat-num"${s.couleur?` style="color:${s.couleur}"`:''}>${s.v}</div><div class="fiche-stat-lbl">${s.l}</div></div>`).join('')}
           </div>
+          ${chemineeTexte?`<div class="d-info-ligne">🔥 ${chemineeTexte}</div>`:''}
           ${r.couchage?`<div class="d-info-ligne">🛏️ ${r.couchage}</div>`:''}
           ${estConnecte() ? `
           <button class="d-modifier" onclick="ouvrirEdition(${i})" style="margin-top:14px">

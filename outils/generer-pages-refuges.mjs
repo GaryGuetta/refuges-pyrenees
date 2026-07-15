@@ -73,13 +73,47 @@ function pageHTML(r){
   const typeLbl = CAT_LABEL[r.categorie] || 'Refuge';
   const lieu = [r.ville, r.departement, r.region].filter(Boolean).join(', ');
   const titre = `${r.nom}${r.altitude ? ' — ' + r.altitude + ' m' : ''} | Refuges des Pyrénées`;
-  const description = echapper(
-    r.description?.slice(0,155) ||
-    `${typeLbl}${r.altitude ? ', à ' + r.altitude + ' m d\u2019altitude' : ''}${lieu ? ' — ' + lieu : ''}. Infos à jour : eau, bois, capacité, accès.`
-  );
+
+  // Meta description : si la fiche a un texte, on l'utilise. Sinon on en
+  // fabrique une à partir des données réelles du lieu (capacité, eau, bois…)
+  // plutôt qu'une phrase passe-partout identique sur des centaines de pages —
+  // Google traite le générique dupliqué comme du contenu de faible valeur.
+  let descAuto;
+  if (r.description) {
+    descAuto = r.description.slice(0, 155);
+  } else {
+    const bouts = [typeLbl];
+    if (r.altitude) bouts.push(`à ${r.altitude} m d\u2019altitude`);
+    if (lieu) bouts.push(lieu);
+    const faits = [];
+    const oui = v => v && /^(oui|yes|1|true|vrai|o)$/i.test(String(v).trim());
+    if (r.cap_ete) faits.push(`${r.cap_ete} place${r.cap_ete > 1 ? 's' : ''}`);
+    if (oui(r.eau)) faits.push('eau à proximité');
+    if (oui(r.bois)) faits.push('bois sur place');
+    if (oui(r.cheminee)) faits.push('cheminée');
+    descAuto = bouts.join(', ')
+      + (faits.length ? '. ' + faits.join(', ').replace(/^./, c => c.toUpperCase()) + '.' : '.')
+      + ' Accès, météo et point d\u2019eau le plus proche.';
+  }
+  const description = echapper(descAuto.slice(0, 160));
+
   const url = `${URL_SITE}/refuge/${r.id}`;
-  const capaciteHTML = (r.cap_ete!=null || r.cap_hiver!=null)
-    ? `<div class="stat"><div class="v">${r.cap_ete ?? '—'} / ${r.cap_hiver ?? '—'}</div><div class="l">Places été / hiver</div></div>` : '';
+
+  // Capacité toujours présente (même vide) pour que la grille soit stable d'une
+  // fiche à l'autre — cohérent avec l'appli (voir fiche.js).
+  const capTxt = [
+    r.cap_ete != null ? `${r.cap_ete} été` : null,
+    r.cap_hiver != null ? `${r.cap_hiver} hiver` : null,
+  ].filter(Boolean).join(' / ') || '—';
+  const capaciteHTML = `<div class="stat"><div class="v">${capTxt}</div><div class="l">Capacité</div></div>`;
+
+  // Le champ cheminée est parfois un oui/non, parfois une description libre
+  // ("Foyer ouvert"). Une case de stat n'accueille qu'une valeur courte.
+  const chemOui = r.cheminee && /^(oui|non)$/i.test(String(r.cheminee).trim());
+  const chemineeStat = chemOui
+    ? `<div class="stat"><div class="v">${echapper(r.cheminee)}</div><div class="l">Cheminée</div></div>` : '';
+  const chemineeLigne = (r.cheminee && !chemOui)
+    ? `<p class="info-ligne">🔥 ${echapper(r.cheminee)}</p>` : '';
   return `<!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -101,11 +135,22 @@ function pageHTML(r){
 <script type="application/ld+json">
 ${JSON.stringify({
   "@context":"https://schema.org",
-  "@type":"TouristAttraction",
+  "@type":"Campground",
   "name": r.nom,
-  "description": r.description || undefined,
-  "geo": { "@type":"GeoCoordinates", "latitude": r.lat, "longitude": r.lon },
-  "address": lieu || undefined
+  "description": descAuto,
+  "url": url,
+  "geo": {
+    "@type":"GeoCoordinates",
+    "latitude": r.lat,
+    "longitude": r.lon,
+    ...(r.altitude ? { "elevation": `${r.altitude} m` } : {}),
+  },
+  ...(lieu ? { "address": { "@type":"PostalAddress", "addressLocality": r.ville || undefined,
+                            "addressRegion": r.departement || r.region || undefined,
+                            "addressCountry": "FR" } } : {}),
+  ...(r.cap_ete ? { "maximumAttendeeCapacity": r.cap_ete } : {}),
+  "isAccessibleForFree": true,
+  "publicAccess": r.categorie !== 'fermee',
 })}
 </script>
 <style>
@@ -133,6 +178,9 @@ ${JSON.stringify({
 
   .lien-ext{color:var(--eau);text-decoration:none;border-bottom:1px solid rgba(90,169,220,.35)}
   .lien-ext:hover{border-bottom-color:var(--eau)}
+
+  .info-ligne{background:var(--panneau);border:1px solid var(--ligne);border-radius:10px;
+    padding:10px 14px;font-size:13.5px;color:var(--txt2);margin-top:10px}
 
   h2{font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;
     color:var(--txt3);margin:30px 0 12px}
@@ -177,12 +225,13 @@ ${JSON.stringify({
   <p class="lieu">${echapper(lieu)}</p>
 
   <div class="stats">
-    ${r.altitude ? `<div class="stat"><div class="v">${r.altitude} m</div><div class="l">Altitude</div></div>` : ''}
-    ${r.eau ? `<div class="stat"><div class="v">${echapper(r.eau)}</div><div class="l">Eau à proximité</div></div>` : ''}
-    ${r.bois ? `<div class="stat"><div class="v">${echapper(r.bois)}</div><div class="l">Bois</div></div>` : ''}
-    ${r.cheminee ? `<div class="stat"><div class="v">${echapper(r.cheminee)}</div><div class="l">Cheminée</div></div>` : ''}
+    <div class="stat"><div class="v">${r.altitude ? r.altitude + ' m' : '—'}</div><div class="l">Altitude</div></div>
+    <div class="stat"><div class="v">${r.eau ? echapper(r.eau) : '—'}</div><div class="l">Eau à proximité</div></div>
+    <div class="stat"><div class="v">${r.bois ? echapper(r.bois) : '—'}</div><div class="l">Bois</div></div>
     ${capaciteHTML}
+    ${chemineeStat}
   </div>
+  ${chemineeLigne}
 
   ${r.description ? `<p class="desc">${descriptionHTML(r.description)}</p>` : ''}
 
@@ -312,9 +361,17 @@ async function main(){
   console.log(`\n✓ ${ok} pages générées dans /refuge`);
 
   // sitemap.xml
-  const urls = refuges.filter(r=>r.id).map(r =>
-    `  <url><loc>${URL_SITE}/refuge/${r.id}</loc></url>`
-  ).join('\n');
+  // lastmod indique à Google quand la fiche a changé : sans lui, il peut mettre
+  // des mois à revenir voir une correction. On se sert de maj_le, mis à jour à
+  // chaque édition (voir edition.js et les corrections d'altitude).
+  const jour = d => {
+    const t = d ? new Date(d) : null;
+    return t && !isNaN(t) ? t.toISOString().slice(0, 10) : null;
+  };
+  const urls = refuges.filter(r=>r.id).map(r => {
+    const lm = jour(r.maj_le);
+    return `  <url><loc>${URL_SITE}/refuge/${r.id}</loc>${lm ? `<lastmod>${lm}</lastmod>` : ''}</url>`;
+  }).join('\n');
   const sitemap = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url><loc>${URL_SITE}/</loc></url>

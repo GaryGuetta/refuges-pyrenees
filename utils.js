@@ -85,6 +85,14 @@ function slug(s){
   return (s||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-+|-+$/g,'');
 }
 
+// Normalise un texte pour la recherche : sans accents, en minuscules.
+// Sans ça, chercher "ariege" ou "gedre" ne trouve rien alors que la base
+// contient "Ariège" et "Gèdre" — un vrai problème avec des noms français
+// et catalans pleins d'accents, que peu de gens tapent au clavier.
+function normRech(s){
+  return (s||'').toString().normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase();
+}
+
 function balisesFormHTML(){
   return BALISES.map(g=>`
     <div class="balises-grp">
