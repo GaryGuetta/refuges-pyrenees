@@ -27,17 +27,32 @@ if (!SUPA_URL || !SUPA_CLE) {
 }
 const supabase = createClient(SUPA_URL, SUPA_CLE);
 
-const TYPE_LABEL = {
-  1:'Cabane fermée', 2:'Cabane ouverte',
-  3:"Cabane ouverte, occupée par le berger l'été",
-  4:'Orri, toue, abri en pierre',
-  5:"Refuge gardé l'été, partie hivernale",
-  6:"Refuge gardé toute l'année", 7:'Ruine'
+// Libellés alignés sur ceux de l'appli (voir tagTxt dans utils.js) : la fiche
+// statique et la fiche interactive doivent dire exactement la même chose.
+const CAT_LABEL = {
+  refuge:'Refuge gardé', libre:'Cabane / abri', cabane:'Cabane / abri',
+  ruine:'Ruine', fermee:'Fermée',
 };
 
 function echapper(s){
   return (s ?? '').toString()
     .replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+// Transforme les URLs d'une description en liens cliquables.
+// Certaines fiches contiennent une URL brute collée par un contributeur : elle
+// s'affichait en texte coupé sur plusieurs lignes, illisible et non cliquable.
+// On échappe TOUJOURS avant de créer le lien, jamais l'inverse : sinon on
+// rouvrirait une faille d'injection HTML via le champ description.
+function descriptionHTML(texte){
+  const sur = echapper(texte);
+  return sur.replace(/https?:\/\/[^\s<]+/g, url => {
+    // Affiche un libellé court plutôt que l'URL entière, qui déborde.
+    let libelle;
+    try { libelle = new URL(url).hostname.replace(/^www\./, ''); }
+    catch { return url; }
+    return `<a class="lien-ext" href="${url}" target="_blank" rel="noopener nofollow">${libelle} ↗</a>`;
+  });
 }
 
 async function chargerTousLesRefuges(){
@@ -55,7 +70,7 @@ async function chargerTousLesRefuges(){
 
 function pageHTML(r){
   const nom = echapper(r.nom);
-  const typeLbl = TYPE_LABEL[r.type_num] || r.categorie || 'Refuge';
+  const typeLbl = CAT_LABEL[r.categorie] || 'Refuge';
   const lieu = [r.ville, r.departement, r.region].filter(Boolean).join(', ');
   const titre = `${r.nom}${r.altitude ? ' — ' + r.altitude + ' m' : ''} | Refuges des Pyrénées`;
   const description = echapper(
@@ -65,7 +80,6 @@ function pageHTML(r){
   const url = `${URL_SITE}/refuge/${r.id}`;
   const capaciteHTML = (r.cap_ete!=null || r.cap_hiver!=null)
     ? `<div class="stat"><div class="v">${r.cap_ete ?? '—'} / ${r.cap_hiver ?? '—'}</div><div class="l">Places été / hiver</div></div>` : '';
-
   return `<!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -83,6 +97,7 @@ function pageHTML(r){
 <meta name="twitter:title" content="${echapper(r.nom)}">
 <meta name="twitter:description" content="${description}">
 <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
 <script type="application/ld+json">
 ${JSON.stringify({
   "@context":"https://schema.org",
@@ -115,11 +130,48 @@ ${JSON.stringify({
     text-decoration:none;font-weight:700;font-size:14px;padding:13px 22px;border-radius:12px}
   .note{background:rgba(240,160,75,.07);border:1px solid rgba(240,160,75,.25);border-radius:12px;
     padding:12px 15px;font-size:12.5px;color:var(--txt2);margin-top:28px}
+
+  .lien-ext{color:var(--eau);text-decoration:none;border-bottom:1px solid rgba(90,169,220,.35)}
+  .lien-ext:hover{border-bottom-color:var(--eau)}
+
+  h2{font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;
+    color:var(--txt3);margin:30px 0 12px}
+
+  #carte-mini{height:230px;border-radius:14px;border:1px solid var(--ligne);
+    background:var(--panneau);margin-bottom:8px}
+  .leaflet-container{background:var(--panneau)}
+  .pin{width:14px;height:14px;border-radius:50%;background:var(--accent);
+    border:2.5px solid var(--fond);box-shadow:0 0 0 2px rgba(240,160,75,.35)}
+
+  .bloc{background:var(--panneau);border:1px solid var(--ligne);border-radius:14px;padding:16px}
+  .attente{color:var(--txt3);font-size:13px}
+
+  .meteo-auj{display:flex;align-items:center;gap:14px;margin-bottom:14px}
+  .meteo-temp{font-size:30px;font-weight:700;letter-spacing:-.02em}
+  .meteo-desc{color:var(--txt2);font-size:13.5px}
+  .meteo-jours{display:grid;grid-template-columns:repeat(6,1fr);gap:6px}
+  .mj{background:var(--panneau-2);border-radius:9px;padding:8px 4px;text-align:center}
+  .mj-nom{font-size:9.5px;color:var(--txt3);text-transform:uppercase;letter-spacing:.04em}
+  .mj-max{font-size:13px;font-weight:700;margin-top:3px}
+  .mj-min{font-size:11px;color:var(--txt3)}
+  .meteo-src{font-size:11px;color:var(--txt3);margin-top:10px}
+
+  .eau-ligne{display:flex;justify-content:space-between;align-items:center;gap:10px;
+    padding:7px 0;border-bottom:1px solid var(--ligne);font-size:13.5px}
+  .eau-ligne:last-child{border-bottom:none}
+  .eau-nom{color:var(--eau)}
+  .eau-dist{color:var(--txt3);font-size:12.5px;white-space:nowrap}
+
+  .actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:24px}
+  .btn2{display:inline-flex;align-items:center;gap:8px;background:var(--panneau);
+    border:1px solid var(--ligne);color:var(--txt);text-decoration:none;font-weight:600;
+    font-size:14px;padding:13px 20px;border-radius:12px}
+  .btn2:hover{border-color:rgba(240,160,75,.45);color:var(--accent)}
 </style>
 </head>
 <body>
 <div class="page">
-  <a class="retour" href="../carte.html">← Retour à la carte</a>
+  <a class="retour" href="${URL_SITE}/carte">← Retour à la carte</a>
   <div class="tag">${echapper(typeLbl)}</div>
   <h1>${nom}</h1>
   <p class="lieu">${echapper(lieu)}</p>
@@ -132,15 +184,112 @@ ${JSON.stringify({
     ${capaciteHTML}
   </div>
 
-  ${r.description ? `<p class="desc">${echapper(r.description)}</p>` : ''}
+  ${r.description ? `<p class="desc">${descriptionHTML(r.description)}</p>` : ''}
 
+  <h2>Situation</h2>
+  <div id="carte-mini"></div>
   <p class="coord">Coordonnées : ${r.lat?.toFixed(5)}, ${r.lon?.toFixed(5)}</p>
 
-  <a class="btn" href="${URL_SITE}/carte.html?refuge=${encodeURIComponent(r.id)}">Voir sur la carte interactive →</a>
+  <h2>Météo sur place</h2>
+  <div class="bloc" id="meteo"><span class="attente">Chargement…</span></div>
+
+  <h2>Point d'eau le plus proche</h2>
+  <div class="bloc" id="eau"><span class="attente">Recherche…</span></div>
+
+  <div class="actions">
+    <a class="btn" href="${URL_SITE}/carte?refuge=${encodeURIComponent(r.id)}">Voir sur la carte interactive →</a>
+    <a class="btn2" href="https://www.google.com/maps/dir/?api=1&destination=${r.lat},${r.lon}" target="_blank" rel="noopener">Itinéraire</a>
+  </div>
 
   <p class="note">Informations collectées automatiquement et complétées par la communauté — vérifie
   toujours l'état réel du lieu avant de partir en randonnée.</p>
 </div>
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script>
+(function(){
+  var LAT = ${r.lat}, LON = ${r.lon}, ALT = ${r.altitude ?? 'null'};
+
+  // ── Carte de situation ───────────────────────────────────────────────────
+  try {
+    var carte = L.map('carte-mini', {
+      scrollWheelZoom:false, attributionControl:true
+    }).setView([LAT, LON], 13);
+    L.tileLayer('https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png', {
+      maxZoom:17, attribution:'© OpenStreetMap, SRTM · © OpenTopoMap (CC-BY-SA)'
+    }).addTo(carte);
+    L.marker([LAT, LON], {
+      icon: L.divIcon({ html:'<div class="pin"></div>', className:'', iconSize:[14,14], iconAnchor:[7,7] })
+    }).addTo(carte);
+  } catch(e){}
+
+  // ── Météo (Open-Meteo, à l'altitude exacte du refuge) ────────────────────
+  var CIEL = {0:'Ciel dégagé',1:'Peu nuageux',2:'Partiellement nuageux',3:'Couvert',
+    45:'Brouillard',48:'Brouillard givrant',51:'Bruine légère',53:'Bruine',55:'Bruine forte',
+    61:'Pluie faible',63:'Pluie',65:'Pluie forte',71:'Neige faible',73:'Neige',75:'Neige forte',
+    77:'Grains de neige',80:'Averses',81:'Averses',82:'Averses fortes',85:'Averses de neige',
+    86:'Averses de neige',95:'Orage',96:'Orage et grêle',99:'Orage et grêle'};
+  var JOURS = ['dim','lun','mar','mer','jeu','ven','sam'];
+
+  var urlM = 'https://api.open-meteo.com/v1/forecast?latitude=' + LAT + '&longitude=' + LON
+    + (ALT !== null ? '&elevation=' + ALT : '')
+    + '&current=temperature_2m,weather_code'
+    + '&daily=weather_code,temperature_2m_max,temperature_2m_min'
+    + '&timezone=auto&forecast_days=6';
+
+  fetch(urlM).then(function(r){ return r.json(); }).then(function(d){
+    var box = document.getElementById('meteo');
+    if (!d || !d.current) { box.innerHTML = '<span class="attente">Météo indisponible.</span>'; return; }
+    var jours = '';
+    for (var i = 0; i < (d.daily.time || []).length; i++) {
+      var dt = new Date(d.daily.time[i] + 'T12:00:00');
+      jours += '<div class="mj"><div class="mj-nom">' + JOURS[dt.getDay()] + '</div>'
+             + '<div class="mj-max">' + Math.round(d.daily.temperature_2m_max[i]) + '°</div>'
+             + '<div class="mj-min">' + Math.round(d.daily.temperature_2m_min[i]) + '°</div></div>';
+    }
+    box.innerHTML =
+      '<div class="meteo-auj"><div class="meteo-temp">' + Math.round(d.current.temperature_2m) + '°C</div>'
+      + '<div class="meteo-desc">' + (CIEL[d.current.weather_code] || '—') + '</div></div>'
+      + '<div class="meteo-jours">' + jours + '</div>'
+      + '<div class="meteo-src">Open-Meteo' + (ALT !== null ? ' · altitude ' + ALT + ' m' : '') + '</div>';
+  }).catch(function(){
+    document.getElementById('meteo').innerHTML = '<span class="attente">Météo indisponible.</span>';
+  });
+
+  // ── Point d'eau le plus proche (OpenStreetMap via Overpass) ──────────────
+  var req = '[out:json][timeout:20];('
+    + 'node["natural"="spring"](around:1500,' + LAT + ',' + LON + ');'
+    + 'node["amenity"="drinking_water"](around:1500,' + LAT + ',' + LON + ');'
+    + 'node["man_made"="water_well"](around:1500,' + LAT + ',' + LON + ');'
+    + 'node["amenity"="fountain"](around:1500,' + LAT + ',' + LON + ');'
+    + ');out body;';
+
+  function dist(la1, lo1, la2, lo2){
+    var R = 6371000, rad = Math.PI/180;
+    var dLa = (la2-la1)*rad, dLo = (lo2-lo1)*rad;
+    var a = Math.sin(dLa/2)*Math.sin(dLa/2)
+          + Math.cos(la1*rad)*Math.cos(la2*rad)*Math.sin(dLo/2)*Math.sin(dLo/2);
+    return 2*R*Math.asin(Math.sqrt(a));
+  }
+
+  fetch('https://overpass-api.de/api/interpreter', {
+    method:'POST', body:'data=' + encodeURIComponent(req)
+  }).then(function(r){ return r.json(); }).then(function(d){
+    var box = document.getElementById('eau');
+    var pts = (d.elements || []).map(function(e){
+      return { nom: (e.tags && e.tags.name) || 'Source', d: dist(LAT, LON, e.lat, e.lon) };
+    }).sort(function(a,b){ return a.d - b.d; }).slice(0, 3);
+
+    if (!pts.length) { box.innerHTML = '<span class="attente">Aucun point d\\'eau connu à moins de 1,5 km.</span>'; return; }
+    box.innerHTML = pts.map(function(p){
+      var d = p.d < 1000 ? Math.round(p.d) + ' m' : (p.d/1000).toFixed(1) + ' km';
+      return '<div class="eau-ligne"><span class="eau-nom">' + p.nom + '</span><span class="eau-dist">à ' + d + '</span></div>';
+    }).join('');
+  }).catch(function(){
+    document.getElementById('eau').innerHTML = '<span class="attente">Recherche indisponible.</span>';
+  });
+})();
+</script>
 </body>
 </html>`;
 }
