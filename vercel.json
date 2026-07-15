@@ -1,5 +1,11 @@
 {
   "buildCommand": "node outils/generer-api-publique.mjs && node outils/generer-pages-refuges.mjs",
   "outputDirectory": ".",
-  "cleanUrls": true
+  "cleanUrls": true,
+  "headers": [
+    {
+      "source": "/sitemap.xml",
+      "headers": [{ "key": "Content-Type", "value": "application/xml" }]
+    }
+  ]
 }

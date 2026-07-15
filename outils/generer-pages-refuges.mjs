@@ -317,7 +317,9 @@ async function main(){
   ).join('\n');
   const sitemap = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url><loc>${URL_SITE}/carte.html</loc></url>
+  <url><loc>${URL_SITE}/</loc></url>
+  <url><loc>${URL_SITE}/carte</loc></url>
+  <url><loc>${URL_SITE}/a-propos</loc></url>
 ${urls}
 </urlset>`;
   await writeFile(path.join(RACINE, 'sitemap.xml'), sitemap);
