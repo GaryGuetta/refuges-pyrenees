@@ -120,6 +120,7 @@ function pageHTML(r){
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>${echapper(titre)}</title>
+<link rel="icon" href="${URL_SITE}/favicon.svg" type="image/svg+xml">
 <meta name="description" content="${description}">
 <link rel="canonical" href="${url}">
 <meta property="og:type" content="place">
